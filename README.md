@@ -38,9 +38,9 @@ dx-ui/
 npm パッケージとしては配布しない。プロジェクトの `frontend/src/` にコピーして使う。
 
 ```bash
-cp -R platform/packages/dx-ui/components your-project/frontend/src/
-cp -R platform/packages/dx-ui/lib        your-project/frontend/src/
-cp platform/packages/dx-ui/registry.ts platform/packages/dx-ui/main.tsx your-project/frontend/src/
+cp -R jazmf-platform/packages/dx-ui/components your-project/frontend/src/
+cp -R jazmf-platform/packages/dx-ui/lib        your-project/frontend/src/
+cp jazmf-platform/packages/dx-ui/registry.ts jazmf-platform/packages/dx-ui/main.tsx your-project/frontend/src/
 ```
 
 その後:
@@ -94,6 +94,6 @@ messages.success(request, "保存しました")  # ページ読込時に自動�
 
 ## 改変ルール
 
-- プロジェクト側でコンポーネントを改善したら、汎用化できる変更は platform に還元する
+- プロジェクト側でコンポーネントを改善したら、汎用化できる変更は jazmf-platform に還元する
 - `components/ui/`（shadcn 内部）の改変は避ける。カスタマイズは `components/dx/` のラッパー層で行う
 - 新しい DX コンポーネントを追加したら `index.ts` と このREADME、`design-system/components.md` を更新する
