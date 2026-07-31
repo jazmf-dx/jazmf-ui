@@ -1,0 +1,383 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+import { ClassSample, SpecTable, Code, DoDont } from './_parts'
+
+<Meta title="Foundations/CSS Classes" />
+
+# CSS Classes（Django テンプレート用）
+
+**このページが実装の中心です。**
+
+このプラットフォームのアプリは Django + htmx が主体で、React は Islands のみです。
+つまり画面上のボタン・入力欄・カードの大半は **React ではなく素の HTML + CSS クラス**です。
+
+- 定義の SSOT: `packages/dx-ui/tokens/theme.css` の `@layer components`
+- 運用ルール: `design-system/components.md`
+
+以下の見本はすべて **Storybook が実アプリと同じ `theme.css` を読んで描画**しています。
+コードブロックはそのまま `.html` にコピーできます。
+
+<DoDont
+  doText={<><Code>{'<button class="btn-primary">保存</button>'}</Code></>}
+  dontText={<><Code>{'<button class="px-5 py-2.5 bg-blue-600 text-white rounded-lg">保存</button>'}</Code></>}
+/>
+
+ユーティリティを毎回並べると、**同じボタンが 187 箇所で微妙に違う**という状態になります
+（実際にそうなった前例があります）。クラスを使えば 1 箇所の修正で全画面に反映されます。
+
+---
+
+## ボタン
+
+### 種類
+
+<ClassSample
+  sample={`<button class="btn-primary">保存</button>
+<button class="btn-secondary">キャンセル</button>
+<button class="btn-success">承認する</button>
+<button class="btn-danger">削除</button>`}
+  note="キャンセル・戻るは必ず btn-secondary、削除は必ず btn-danger。この対応を画面ごとに変えないでください。"
+/>
+
+<SpecTable
+  head={['クラス', '用途']}
+  rows={[
+    [<Code>btn-primary</Code>, 'メインアクション（保存・送信・作成）。1 画面に原則 1 つ'],
+    [<Code>btn-secondary</Code>, '補助操作（キャンセル・戻る・閉じる）'],
+    [<Code>btn-success</Code>, '承認・確定'],
+    [<Code>btn-danger</Code>, '削除・取り消し不可の操作'],
+  ]}
+/>
+
+### サイズ
+
+サイズクラスは**色クラスと組み合わせて**使います。
+サイズクラス単体では色が付きません。
+
+<ClassSample
+  sample={`<button class="btn-primary btn-lg">大きいボタン</button>
+<button class="btn-primary">標準（px-5 py-2.5）</button>
+<button class="btn-primary btn-sm">小さいボタン</button>
+<button class="btn-primary btn-xs">極小</button>`}
+  note="標準サイズは btn-primary 自身が持っています。btn-lg / btn-sm / btn-xs は後ろに書いて上書きします。"
+/>
+
+### アイコン付き
+
+<ClassSample
+  sample={`<button class="btn-primary">
+  <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+  新規作成
+</button>`}
+  note={<>実際のテンプレートでは SVG を直書きせず <Code>{'{% icon "plus" size="sm" extra_class="mr-1.5" %}'}</Code> を使ってください。</>}
+/>
+
+### アイコンのみ（`aria-label` 必須）
+
+<ClassSample
+  sample={`<button class="btn-secondary btn-sm" aria-label="削除">
+  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/></svg>
+</button>`}
+  note="aria-label がないと、スクリーンリーダーには「ボタン」としか読まれず何のボタンか分かりません。"
+/>
+
+### 注意事項
+
+- `<a>` にボタンの見た目を付ける場合も同じクラスを使えます。
+  ただし**遷移なら `<a>`、処理実行なら `<button>`** を使ってください
+  （`<a>` は新しいタブで開ける・`<button>` は Enter/Space で発火する、という期待が違います）
+- 送信ボタンには `type="submit"`、それ以外には `type="button"` を明示してください。
+  省略すると `<form>` 内では submit 扱いになり、意図しない送信が起きます
+
+---
+
+## 入力欄
+
+<ClassSample
+  sample={`<input type="text" class="input-field" placeholder="件名を入力">`}
+/>
+
+Django フォームでは `widgets` で指定します。テンプレート側に書きません。
+
+```python
+class IssueForm(forms.ModelForm):
+    class Meta:
+        widgets = {
+            "title": forms.TextInput(attrs={"class": "input-field"}),
+            "body": forms.Textarea(attrs={"class": "input-field", "rows": 5}),
+            "status": forms.Select(attrs={"class": "input-field"}),
+        }
+```
+
+### セレクト
+
+`select.input-field` には矢印アイコンが自動で付きます（`appearance-none` + 背景画像）。
+
+<ClassSample
+  sample={`<select class="input-field">
+  <option>未対応</option>
+  <option>対応中</option>
+  <option>完了</option>
+</select>`}
+  note="選択肢が多く検索が必要な場合は Tom Select を使ってください（各プロジェクトの input.css に ts-wrapper があります）。"
+/>
+
+### テキストエリア
+
+<ClassSample
+  sample={`<textarea class="input-field" rows="3" placeholder="詳細を入力"></textarea>`}
+/>
+
+---
+
+## フォームフィールド（ラベル + 入力 + エラー）
+
+**個別に組まず、partial を include してください。**
+
+```html
+{% include 'includes/molecules/form_field.html' with field=form.title label="タイトル" required=True %}
+```
+
+見た目はこうなります（エラーあり・なし）。
+
+<ClassSample
+  sample={`<div>
+  <label for="id_title" class="block text-sm font-medium text-gray-700 mb-1.5">
+    タイトル<span class="text-red-400 ml-0.5">*</span>
+  </label>
+  <input type="text" id="id_title" class="input-field" placeholder="件名を入力">
+  <p class="mt-1 text-xs text-gray-500">50 文字以内で入力してください</p>
+</div>`}
+/>
+
+<ClassSample
+  sample={`<div>
+  <label for="id_email" class="block text-sm font-medium text-gray-700 mb-1.5">
+    メールアドレス<span class="text-red-400 ml-0.5">*</span>
+  </label>
+  <input type="text" id="id_email" class="input-field" value="foo@" aria-invalid="true">
+  <p class="mt-1.5 text-sm text-red-600">メールアドレスの形式が正しくありません</p>
+</div>`}
+  note="余白は固定です: ラベル下 mb-1.5 / エラー上 mt-1.5 / ヘルプ上 mt-1。混在させないでください。"
+/>
+
+エラーは**色だけでなく必ず文言で**示します。赤枠だけでは何が悪いか分かりません。
+
+---
+
+## バッジ
+
+`badge` は形だけを定義しています（`rounded-full` / `text-xs` / `px-2 py-0.5`）。
+**色は別途クラスで渡します。**
+
+<ClassSample
+  sample={`<span class="badge bg-yellow-50 text-yellow-600">未対応</span>
+<span class="badge bg-sky-50 text-sky-500">対応中</span>
+<span class="badge bg-emerald-50 text-emerald-600">完了</span>
+<span class="badge bg-orange-50 text-orange-600">差戻し</span>
+<span class="badge bg-rose-50 text-rose-500">緊急</span>
+<span class="badge bg-gray-100 text-gray-500">アーカイブ</span>
+<span class="badge bg-purple-50 text-purple-600">保留</span>`}
+  note="意味と色の対応は Foundations/Colors のステータスカラー表に従ってください。全アプリで揃えます。"
+/>
+
+色はテンプレートに書かず、`models.py` のプロパティで返します。
+
+```html
+<span class="badge {{ obj.status_display_class }}">{{ obj.get_status_display }}</span>
+```
+
+---
+
+## アバター
+
+<ClassSample
+  sample={`<span class="avatar-sm bg-blue-100 text-blue-700">田</span>
+<span class="avatar-md bg-blue-100 text-blue-700">田</span>
+<span class="avatar-lg bg-blue-100 text-blue-700">田</span>
+<span class="avatar-md bg-gray-200 text-gray-600">?</span>`}
+  note="ユーザーは bg-blue-100 text-blue-700、システム・匿名は bg-gray-200 text-gray-600 に統一します。"
+/>
+
+<SpecTable
+  head={['クラス', 'サイズ', '用途']}
+  rows={[
+    [<Code>avatar-sm</Code>, 'w-5 h-5', '一覧の行内・コメントの連投'],
+    [<Code>avatar-md</Code>, 'w-7 h-7', '標準（コメント・カード）'],
+    [<Code>avatar-lg</Code>, 'w-9 h-9', 'プロフィール・詳細ヘッダー'],
+  ]}
+/>
+
+頭文字だけでは誰か分からないため、`title` 属性でフルネームを補ってください。
+
+```html
+<span class="avatar-md bg-blue-100 text-blue-700" title="{{ user.get_full_name }}">
+  {{ user.get_full_name|first|upper }}
+</span>
+```
+
+---
+
+## カード
+
+<ClassSample
+  sample={`<div class="card">標準カード（p-4）</div>`}
+/>
+
+<ClassSample
+  sample={`<div class="card-sm">card-sm（p-3）</div>
+<div class="card-lg">card-lg（p-6）</div>`}
+  note="card-sm / card-lg は単体で使えます（card との併記は不要です）。"
+/>
+
+### 見出し付き
+
+<ClassSample
+  sample={`<div class="card">
+  <div class="flex items-start justify-between gap-3 mb-3">
+    <h3 class="text-base font-semibold leading-tight">申請一覧</h3>
+    <button class="btn-primary btn-sm">追加</button>
+  </div>
+  <p class="text-sm text-gray-600">本文がここに入ります。</p>
+</div>`}
+/>
+
+### ルール
+
+- **インラインで `bg-white rounded-lg border border-gray-200 p-4` と書くのは禁止**（`card` を使う）
+- **カードをカードの中に入れない**。境界が判別できなくなります
+- 影は `shadow-sm` のみ（`card` に含まれています）
+
+---
+
+## 空状態
+
+一覧が 0 件のときに何も表示しないと、読み込み失敗と区別が付きません。**必ず空状態を出します。**
+
+```html
+{% include 'includes/molecules/empty_state.html' with message="申請がありません" sub="「新規申請」から作成してください" icon="inbox" %}
+```
+
+<ClassSample
+  sample={`<div class="text-center py-12">
+  <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+  </svg>
+  <p class="text-gray-500 text-sm font-medium">申請がありません</p>
+  <p class="text-gray-400 text-xs mt-1">「新規申請」から作成してください</p>
+</div>`}
+  note="sub には「次に何をすればよいか」を書いてください。「データがありません」だけでは行き止まりになります。"
+/>
+
+---
+
+## インラインアラート
+
+```html
+{% include 'includes/inline_alert.html' with type='error' title='エラー' message=form.email.errors.0 %}
+```
+
+<ClassSample
+  sample={`<div class="p-4 rounded-lg border flex items-start gap-3 bg-blue-50 border-blue-200 text-blue-700">
+  <svg class="w-5 h-5 flex-shrink-0 mt-0.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+  <div class="flex-1 text-sm"><p>この操作は取り消せません。</p></div>
+</div>`}
+/>
+
+<ClassSample
+  sample={`<div class="p-4 rounded-lg border flex items-start gap-3 bg-red-50 border-red-200 text-red-700">
+  <svg class="w-5 h-5 flex-shrink-0 mt-0.5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3l-6.928-12c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+  <div class="flex-1 text-sm">
+    <p class="font-medium">保存できませんでした</p>
+    <p class="mt-1">必須項目が入力されていません。</p>
+  </div>
+</div>`}
+  note="type: info / success / warning / error。画面内の恒久的なメッセージはアラート、操作結果の一時通知は DxToast を使います。"
+/>
+
+---
+
+## ローディング
+
+htmx のリクエスト中の表示には `htmx-indicator` を使います
+（`input.css` に定義があります）。
+
+```html
+{% include 'includes/atoms/spinner.html' with size="sm" %}
+```
+
+<ClassSample
+  sample={`<svg class="animate-spin w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+</svg>`}
+  note="読み込み中であることは色や動きだけでなく、aria-busy や sr-only テキストでも伝えてください。"
+/>
+
+---
+
+## テーブル
+
+テーブル用の共通クラスはまだありません（重複が確認されたら切り出します）。
+現状は以下の構成に揃えてください。
+
+<ClassSample
+  sample={`<div class="overflow-x-auto rounded-xl border border-gray-200 bg-white">
+  <table class="w-full border-collapse text-sm">
+    <thead>
+      <tr class="border-b border-gray-200 bg-gray-100">
+        <th scope="col" class="px-4 py-2.5 text-left text-xs font-semibold text-gray-500">件名</th>
+        <th scope="col" class="px-4 py-2.5 text-right text-xs font-semibold text-gray-500">金額</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="border-b border-gray-200">
+        <td class="px-4 py-2.5">備品購入</td>
+        <td class="px-4 py-2.5 text-right">12,000 円</td>
+      </tr>
+      <tr>
+        <td class="px-4 py-2.5">出張費</td>
+        <td class="px-4 py-2.5 text-right">45,800 円</td>
+      </tr>
+    </tbody>
+  </table>
+</div>`}
+  note={<>ヘッダーには <Code>scope="col"</Code> を付けてください。数値は右寄せ + 桁区切りにします。横スクロールは親の <Code>overflow-x-auto</Code> で受けます。</>}
+/>
+
+---
+
+## CSS クラスと React の対応
+
+同じ見た目が両方に用意されています。**`.html` を書いているなら左、`.tsx` なら右**です。
+
+<SpecTable
+  head={['CSS クラス（Django）', 'React（Island 内）']}
+  rows={[
+    [<Code>btn-primary</Code>, <Code>{'<DxButton variant="primary">'}</Code>],
+    [<Code>btn-secondary</Code>, <Code>{'<DxButton variant="secondary">'}</Code>],
+    [<Code>btn-danger</Code>, <Code>{'<DxButton variant="danger">'}</Code>],
+    [<Code>input-field</Code>, <Code>{'<DxInput>'}</Code>],
+    [<Code>select.input-field</Code>, <Code>{'<DxSelect>'}</Code>],
+    [<Code>card</Code>, <Code>{'<DxCard>'}</Code>],
+    ['`form_field.html`', <Code>{'<DxFormField>'}</Code>],
+    ['（テーブルの HTML）', <Code>{'<DxTable>'}</Code>],
+    [<Code>badge</Code>, '（React 版なし。span に直接クラスを当てる）'],
+    ['`inline_alert.html`', '（恒久メッセージはこちら。一時通知は `DxToast`）'],
+  ]}
+/>
+
+**CSS クラスを使うためだけに React Island を新設しないでください。**
+逆に、React Island の中で `class="btn-primary"` を直書きしないでください
+（`DxButton` の状態管理・アクセシビリティ対応が失われます）。
+
+---
+
+## ダークモードの現状
+
+**この一覧の CSS クラスはダークモードに未対応です。**
+
+`card` / `input-field` は `bg-white`、`form_field.html` は `text-gray-700` を
+直書きしているため、ツールバーの Theme を dark にすると破綻します。
+
+これは既知の未対応項目です（対応は別タスク）。
+ただし**新しく書くテンプレートでは `bg-white` を増やさない**でください。

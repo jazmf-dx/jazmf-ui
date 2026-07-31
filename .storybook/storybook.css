@@ -1,0 +1,27 @@
+/* ==========================================================================
+ * Storybook 用の Tailwind エントリ
+ *
+ * 各プロジェクトの backend/static/css/input.css と同じ構成にしてある:
+ *   tailwindcss + tw-animate-css + tokens/theme.css
+ *
+ * トークンと btn-* / card / badge 等の定義は theme.css（SSOT）から読む。
+ * ここに独自のトークンやコンポーネントクラスを書いてはいけない。
+ * 書くと Storybook だけで通用するスタイルになり、実アプリと乖離する。
+ * ========================================================================== */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Storybook が走査する対象。実アプリの input.css の @source 相当。 */
+@source "../components/**/*.{ts,tsx}";
+@source "../stories/**/*.{ts,tsx,mdx}";
+
+/* ★ トークン + 共有コンポーネントクラスの SSOT */
+@import "../tokens/theme.css";
+
+/* Storybook のプレビュー領域を実アプリの body に近づける。
+ * 実アプリでは base.html が bg-gray-50 を当てている。 */
+.dx-preview {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}

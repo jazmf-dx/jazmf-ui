@@ -1,0 +1,145 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Introduction" />
+
+# DX デザインシステム
+
+社内 Web アプリ共通の UI 基盤です。単なるコンポーネント集ではなく、
+**デザインルール・トークン・共通 UI・使用例・AI 参照用の仕様** をまとめた開発基盤です。
+
+この Storybook は「見た目の確認ツール」ではなく **仕様書** です。
+新しい画面を作る前にここを読み、既にある部品を使ってください。
+
+---
+
+## まず読む順番
+
+1. **Foundations / Colors** — 色は意味で選ぶ（`primary` / `danger` など）
+2. **Foundations / CSS Classes** — Django テンプレートで使う部品（**実装の大半はこちら**）
+3. **Components** — React Island の中で使う `Dx*` コンポーネント
+4. **Patterns** — フォーム・一覧の組み立て例
+
+---
+
+## 最重要: React と Django のどちらを使うか
+
+このプラットフォームのアプリは **Django + htmx + Alpine.js** が主体で、
+React は「Islands」として一部だけに埋め込まれます。
+つまり **画面上のボタンの大半は React ではありません**。
+
+| 実装場所 | 使うもの | 例 |
+| --- | --- | --- |
+| Django テンプレート（`.html`） | **CSS クラス** | `<button class="btn-primary">保存</button>` |
+| React Island（`.tsx`） | **`Dx*` コンポーネント** | `<DxButton variant="primary">保存</DxButton>` |
+
+判断基準はシンプルです。**`.html` を書いているなら CSS クラス、`.tsx` を書いているなら `Dx*`。**
+
+- `.html` の中で React を呼ぶために Island を新設しない
+- `.tsx` の中で `class="btn-primary"` を直書きしない（`DxButton` を使う）
+
+両者は同じトークン（`tokens/theme.css`）を参照しているので見た目は一致します。
+
+---
+
+## 使ってはいけないもの
+
+- **独自の Button / Input / Card を作る** → 既存の `Dx*` か CSS クラスを使う
+- **`components/ui/` を画面から直接 import する** → shadcn/ui の下請けです。`components/dx/` を使う
+- **色を直書きする**（`style="color:#3b82f6"` / `bg-[#3b82f6]`）→ トークンを使う
+- **`confirm()` / `alert()`** → `DxConfirmDialog` / `DxToast` を使う
+- **業務固有コンポーネントをここに追加する**（`VideoCard` / `EmployeeCard` / `InvoiceTable` など）
+  → 意味と内容が業務ごとに違うため、各アプリの `frontend/src/` で管理する
+
+---
+
+## 何を共通化しているか
+
+見た目だけではありません。以下をまとめて共通化しています。
+
+- **見た目** — 色・余白・角丸・影・タイポグラフィ
+- **操作性** — キーボード操作、フォーカスリング、Esc で閉じる等の振る舞い
+- **API 設計** — prop 名の付け方（`variant` / `size` / `error` / `disabled`）
+- **アクセシビリティ** — ラベル紐づけ、`aria-*`、コントラスト比
+- **命名規約** — `Dx` プレフィックス、CSS クラス名
+- **使用ルール** — 「いつ使い、いつ使わないか」（各 Story に記載）
+
+---
+
+## トークンの構造
+
+```
+packages/dx-ui/tokens/theme.css        ← 値の SSOT（@theme / .dark / btn-* 等）
+    ├─ 各プロジェクトの backend/static/css/input.css が @import
+    └─ Storybook の .storybook/storybook.css が @import
+```
+
+Storybook と実アプリが同じファイルを読んでいるため、
+**Storybook の見た目 = 実アプリの見た目** になります。
+
+### アプリごとのブランドカラー変更
+
+各プロジェクトの `input.css` で `@theme` を上書きします。
+
+```css
+@import "../../../frontend/src/tokens/theme.css";
+
+/* このアプリだけ primary を紫にする */
+@theme {
+  --color-primary: oklch(0.606 0.25 292.717);
+  --color-primary-hover: oklch(0.541 0.281 293.009);
+  --color-primary-active: oklch(0.491 0.27 292.581);
+}
+```
+
+`btn-primary` も `<DxButton variant="primary">` も `var(--color-primary)` を
+参照しているため、**この 1 箇所だけでアプリ全体のブランドカラーが変わります**。
+コンポーネントの API・使い方・アクセシビリティは共通のままです。
+
+---
+
+## ダークモードの現状
+
+**構造は用意済み、既存画面の対応は未完了** です。
+
+- `<html class="dark">` を付けたときだけ有効になるオプトイン方式です
+- ツールバーの **Theme** で切り替えられます
+- 新規コンポーネント（`DxInput` / `DxSelect` / `DxCheckbox` / `DxCard` / `DxTable` / `DxFormField`）は
+  セマンティックトークンのみを使っており dark 対応済みです
+- **既存コンポーネントと CSS クラス（`card` / `input-field` 等）は `bg-white` 直書きのため
+  dark で破綻します。** Theme を dark にすると破綻箇所が見えます。これは既知の未対応項目です
+
+新しくコンポーネントを作るときは `bg-white` / `text-gray-900` / `border-gray-200` ではなく
+`bg-card` / `text-foreground` / `border-border` を使ってください。
+
+---
+
+## 参照ドキュメント
+
+Storybook は視覚的な仕様書、Markdown は AI が `grep` で読む詳細ルールです。両方を維持します。
+
+| ドキュメント | 内容 |
+| --- | --- |
+| `design-system/colors.md` | 色の運用ルール、ステータスカラーの意味 |
+| `design-system/typography.md` | 見出し・行間・コントラスト比 |
+| `design-system/spacing-and-layout.md` | 余白スケール、レイアウト |
+| `design-system/components.md` | 部品ごとの規約、重複の棚卸し |
+| `design-system/forms-and-validation.md` | フォームとバリデーション |
+| `design-system/accessibility.md` | アクセシビリティ要件 |
+| `design-system/icons.md` | アイコンの使い方 |
+| `design-system/principles.md` | 原則と追加手順 |
+| `decisions/adr-0003-dx-ui-wrapper.md` | なぜ shadcn/ui をラップするのか |
+| `decisions/adr-0005-storybook-as-spec.md` | なぜ Storybook を仕様書にするのか |
+
+---
+
+## 共通部品を追加するとき
+
+1. **本当に複数アプリで繰り返し使うか** を確認する（1 アプリだけなら各アプリで持つ）
+2. `components/ui/` に下請けが必要なら `@base-ui/react` をラップして追加する
+3. `components/dx/Dx*.tsx` を作り、JSDoc に目的・`@example` を書く
+4. `components/dx/index.ts` に export する
+5. **Story を必ず追加する**（目的 / 使う場面 / **使わない場面** / Props / 使用例 / 注意事項）
+6. セマンティックトークンのみを使う（dark 対応のため）
+
+Story のない共通部品は「存在しないもの」として扱われます。
+AI も他の開発者も Storybook を見て実装するため、Story がないと再発明されます。

@@ -1,0 +1,132 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+import { ICON_NAMES, ICON_SIZES } from '@/tokens/icons.generated'
+import { IconGrid, Icon, SpecTable, Code, DoDont } from './_parts'
+
+<Meta title="Foundations/Icons" />
+
+# Icons
+
+- SSOT: `packages/django-shared/icons_templatetag.py` の `ICONS`（Heroicons v2 outline）
+- 運用ルール: `design-system/icons.md`
+
+**インライン SVG のコピペは禁止です。**
+過去に同じアイコンが 1,574 個 / 281 ファイルに複製され、
+「アイコンを 1 つ差し替える」ことが実質不可能になった前例があります。
+
+---
+
+## どちらを使うか
+
+| 文脈 | 使うもの |
+| --- | --- |
+| Django テンプレート（`.html`） | `{% icon %}` templatetag |
+| React Island（`.tsx`） | `lucide-react` の named import |
+
+どちらも同じ Heroicons / Lucide 系のアウトラインで、線幅 1.5 に揃っています。
+
+---
+
+## Django: `{% icon %}`
+
+```html
+{% load icons %}
+
+{% icon "plus" %}                           {# w-5 h-5（デフォルト） #}
+{% icon "trash" size="sm" %}                {# w-4 h-4 #}
+{% icon "check" size="lg" %}                {# w-6 h-6 #}
+{% icon "plus" extra_class="text-white" %}  {# 色は extra_class で渡す #}
+```
+
+### サイズ
+
+<SpecTable
+  head={['size', 'クラス', '見本']}
+  rows={Object.entries(ICON_SIZES).map(([k, v]) => [
+    <Code>{k}</Code>,
+    <Code>{v}</Code>,
+    <Icon name="bell" className={`${v} text-foreground`} />,
+  ])}
+/>
+
+`size` を省略すると `md`（`w-5 h-5`）です。
+ボタン内のアイコンは `sm`（`w-4 h-4`）が本文サイズと揃います。
+
+---
+
+## React: `lucide-react`
+
+```tsx
+// ✓ named import
+import { Plus, Trash2 } from 'lucide-react'
+
+<DxButton variant="primary">
+  <Plus className="w-4 h-4" />
+  新規作成
+</DxButton>
+```
+
+<DoDont
+  doText={<><Code>{"import { Plus } from 'lucide-react'"}</Code></>}
+  dontText={<><Code>{"import * as icons from 'lucide-react'"}</Code>（バンドル全体を取り込む）</>}
+/>
+
+名前は Django 側と異なります（`x-mark` → `X`、`pencil` → `Pencil`、
+`ellipsis-vertical` → `MoreVertical`）。lucide の名称に従ってください。
+
+---
+
+## 利用可能なアイコン（{ICON_NAMES.length} 個）
+
+Django テンプレートで `{'{% icon "名前" %}'}` に指定できる名前の全一覧です。
+
+<IconGrid />
+
+同じ図形に別名があるものがあります（`x-mark` / `x`、`search` / `magnifying-glass`）。
+新規実装では前者（`x-mark`、`search`）を使ってください。
+
+---
+
+## ルール
+
+1. **必要なアイコンが上に無い場合は、`icons_templatetag.py` の辞書に 1 回だけ追加する。**
+   追加後に `cd packages/dx-ui && npm run gen:icons` を実行して
+   `tokens/icons.generated.ts` を再生成してください（この一覧に反映されます）
+2. **絵文字を UI アイコンとして使わない。** OS ごとに見た目が変わり、
+   サイズと色を制御できません
+3. **色は `extra_class` / `className` で Tailwind クラスを渡す。**
+   SVG の `fill` / `stroke` を直書きしないでください
+   （`stroke="currentColor"` なので親の文字色を継承します）
+4. **アイコンだけのボタンには必ず `aria-label` を付ける。**
+   SVG 自体は `aria-hidden="true"` で読み上げ対象外です
+5. アイコンは意味の補助です。**アイコンだけで機能を伝えない**でください
+   （削除がゴミ箱アイコンだけだと、アーカイブと区別できません）
+
+```html
+<!-- ✓ アイコンのみのボタン -->
+<button class="btn-sm btn-secondary" aria-label="削除">
+  {% icon "trash" size="sm" %}
+</button>
+```
+
+```tsx
+{/* ✓ React 版 */}
+<DxButton variant="secondary" size="sm" aria-label="削除">
+  <Trash2 className="w-4 h-4" />
+</DxButton>
+```
+
+---
+
+## `icons.generated.ts` について
+
+この一覧は `icons_templatetag.py` から自動生成しています。
+
+```
+packages/django-shared/icons_templatetag.py   ← SSOT（Django が使う）
+        ↓ npm run gen:icons
+packages/dx-ui/tokens/icons.generated.ts      ← 自動生成（Storybook が使う）
+```
+
+`icons.generated.ts` を手で編集しないでください。次の生成で上書きされます。
+また、このファイルは**一覧表示のためだけ**にあります。
+アプリのコードから import しないでください（React では `lucide-react` を使います）。
