@@ -48,6 +48,9 @@ export type { DxSelectProps, DxSelectItem } from "./DxSelect"
 export { DxCheckbox } from "./DxCheckbox"
 export type { DxCheckboxProps } from "./DxCheckbox"
 
+export { DxButtonGroup } from "./DxButtonGroup"
+export type { DxButtonGroupProps, DxButtonGroupItem } from "./DxButtonGroup"
+
 export { DxCard } from "./DxCard"
 export type { DxCardProps, DxCardPadding } from "./DxCard"
 
@@ -56,3 +59,27 @@ export type { DxTableProps, DxTableColumn } from "./DxTable"
 
 export { DxFormField } from "./DxFormField"
 export type { DxFormFieldProps } from "./DxFormField"
+
+export { DxTabs } from "./DxTabs"
+export type { DxTabsProps, DxTabItem } from "./DxTabs"
+
+export { DxPagination } from "./DxPagination"
+export type { DxPaginationProps } from "./DxPagination"
+
+export { DxBadge } from "./DxBadge"
+export type { DxBadgeProps, DxBadgeTone } from "./DxBadge"
+
+export { DxRadioGroup } from "./DxRadioGroup"
+export type { DxRadioGroupProps, DxRadioGroupItem } from "./DxRadioGroup"
+
+export { DxTextarea } from "./DxTextarea"
+export type { DxTextareaProps } from "./DxTextarea"
+
+export { DxSearchInput } from "./DxSearchInput"
+export type { DxSearchInputProps } from "./DxSearchInput"
+
+export { DxSpinner } from "./DxSpinner"
+export type { DxSpinnerProps, DxSpinnerSize } from "./DxSpinner"
+
+export { DxProgress } from "./DxProgress"
+export type { DxProgressProps } from "./DxProgress"
