@@ -19,6 +19,8 @@
  * 各プロジェクトの input.css に書く。
  * ========================================================================== */
 
+@import './motion.css';
+
 @theme {
   --font-sans: 'Inter', 'IBM Plex Sans JP', ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
