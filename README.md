@@ -39,9 +39,16 @@ Storybook は見た目の確認ツールではなく **仕様書**である。�
 | セクション | 内容 |
 |---|---|
 | **Introduction** | 読む順番・禁止事項・React と Django の使い分け。**最初に読む** |
-| **Foundations** | Colors / Typography / Spacing / Radius & Shadow / Icons / **CSS Classes** |
-| **Components** | Dx コンポーネント 13 個 |
+| **Foundations** | Colors / Typography / Spacing / Radius & Shadow / Icons / CSS Classes / **Motion** |
+| **Components** | Dx コンポーネント 23 個 |
 | **Patterns** | FormLayout / DataTable（画面の組み立て方） |
+
+<important>
+**グローバルナビ・サイドバーは dx-ui では作らない。** Django 側の `includes/organisms/` に
+置く方針にした（[ADR-0008](../../decisions/adr-0008-layout-in-django-and-react-tier-scheme.md)）。
+React の分類は `Foundations / Components / Patterns` の3層を維持し、
+atoms/molecules/organisms のようなティアは追加しない。
+</important>
 
 **Foundations/CSS Classes** は Django テンプレート向け（`btn-primary` / `badge` / `card` /
 `input-field` / `avatar-*`）の見本。**アプリの画面の大半は React ではなく Django + htmx**

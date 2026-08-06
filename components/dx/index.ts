@@ -83,3 +83,6 @@ export type { DxSpinnerProps, DxSpinnerSize } from "./DxSpinner"
 
 export { DxProgress } from "./DxProgress"
 export type { DxProgressProps } from "./DxProgress"
+
+export { DxSidebarItem } from "./DxSidebarItem"
+export type { DxSidebarItemProps } from "./DxSidebarItem"

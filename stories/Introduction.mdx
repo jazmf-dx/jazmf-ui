@@ -16,8 +16,15 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 1. **Foundations / Colors** — 色は意味で選ぶ（`primary` / `danger` など）
 2. **Foundations / CSS Classes** — Django テンプレートで使う部品（**実装の大半はこちら**）
-3. **Components** — React Island の中で使う `Dx*` コンポーネント
-4. **Patterns** — フォーム・一覧の組み立て例
+3. **Foundations / Motion** — アニメーションのイージング・持続時間トークン
+4. **Components** — React Island の中で使う `Dx*` コンポーネント
+5. **Patterns** — フォーム・一覧の組み立て例
+
+<important>
+**グローバルナビ・サイドバーは React（`Dx*`）では作らない。** 全ページに出る chrome を
+Island 化すると Islands 方針から逸脱するため、Django 側の `includes/organisms/` に置く
+（[ADR-0008](../../../decisions/adr-0008-layout-in-django-and-react-tier-scheme.md)）。
+</important>
 
 ---
 
@@ -129,6 +136,7 @@ Storybook は視覚的な仕様書、Markdown は AI が `grep` で読む詳細�
 | `design-system/principles.md` | 原則と追加手順 |
 | `decisions/adr-0003-dx-ui-wrapper.md` | なぜ shadcn/ui をラップするのか |
 | `decisions/adr-0005-storybook-as-spec.md` | なぜ Storybook を仕様書にするのか |
+| `decisions/adr-0008-layout-in-django-and-react-tier-scheme.md` | なぜナビ・サイドバーを Django 側に置くのか |
 
 ---
 
