@@ -6,9 +6,9 @@
  */
 
 import * as React from "react"
-import { RadioGroup } from "@/components/ui/radio-group"
-import { Radio } from "@/components/ui/radio"
-import { cn } from "@/lib/utils"
+import { RadioGroup } from '../ui/radio-group'
+import { Radio } from '../ui/radio'
+import { cn } from '../../lib/utils'
 
 export interface DxRadioGroupItem {
   /** 選択時の値 */

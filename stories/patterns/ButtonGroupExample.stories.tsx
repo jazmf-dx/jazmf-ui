@@ -1,7 +1,7 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Truck, Store, PackageCheck } from 'lucide-react'
-import { DxButtonGroup, DxCard, DxFormField, type DxButtonGroupItem } from '@/components/dx'
+import { DxButtonGroup, DxCard, DxFormField, type DxButtonGroupItem } from '../../components/dx'
 
 /**
  * Tailwind Plus の Radio groups パターンのうち「Button group」表現を

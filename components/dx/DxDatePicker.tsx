@@ -13,9 +13,9 @@ import { ja } from "date-fns/locale"
 import { CalendarIcon } from "lucide-react"
 import type { DateRange } from "react-day-picker"
 
-import { cn } from "@/lib/utils"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { cn } from '../../lib/utils'
+import { Calendar } from '../ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
 const DISPLAY_FORMAT = "yyyy年M月d日"
 const SHORT_FORMAT = "M/d"

@@ -53,7 +53,7 @@
  */
 
 import { useEffect, useRef, useState } from "react"
-import { DxDialog, DxToast, DxToaster } from "@/components/dx"
+import { DxDialog, DxToast, DxToaster } from './dx'
 
 export interface DxFormDialogIslandProps {
   /**

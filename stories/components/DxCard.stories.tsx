@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { MoreVertical } from 'lucide-react'
-import { DxCard, DxButton, DxDropdown } from '@/components/dx'
+import { DxCard, DxButton, DxDropdown } from '../../components/dx'
 
 /**
  * DxCard はコンテンツをひとまとまりに見せるための枠。

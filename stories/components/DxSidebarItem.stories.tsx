@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Inbox, Send, FileText, Settings } from 'lucide-react'
-import { DxSidebarItem } from '@/components/dx'
+import { DxSidebarItem } from '../../components/dx'
 
 const meta = {
   title: 'Components/DxSidebarItem',

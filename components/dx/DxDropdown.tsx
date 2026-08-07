@@ -15,8 +15,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { cn } from "@/lib/utils"
+} from '../ui/dropdown-menu'
+import { cn } from '../../lib/utils'
 
 export interface DxDropdownItem {
   /**

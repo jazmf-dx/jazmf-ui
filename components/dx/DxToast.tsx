@@ -7,7 +7,7 @@
  * 使い方は 3 経路あり、いずれも同じトーストに集約されます:
  *
  * 1. React (Island) 内から:
- *      import { DxToast } from "@/components/dx"
+ *      import { DxToast } from '../dx'
  *      DxToast.success("保存しました")
  *      DxToast.error("保存に失敗しました", "ネットワークエラーです")
  *
@@ -23,7 +23,7 @@
  * ここでは title / description は必ずプレーンな文字列を渡します。
  */
 
-import { toast as shadcnToast } from "@/hooks/use-toast"
+import { toast as shadcnToast } from '../../hooks/use-toast'
 
 /** トーストのタイプ（見た目と variant を決定） */
 export type DxToastType = "success" | "error" | "warning" | "info"
@@ -141,7 +141,7 @@ export function registerGlobalDxToast() {
  *
  * base.html（全ページ共通）に 1 つマウントしてください。
  */
-export { Toaster as DxToaster } from "@/components/ui/toaster"
+export { Toaster as DxToaster } from '../ui/toaster'
 
 declare global {
   interface Window {

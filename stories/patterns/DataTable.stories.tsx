@@ -11,7 +11,7 @@ import {
   DxTable,
   DxToast,
   type DxTableColumn,
-} from '@/components/dx'
+} from '../../components/dx'
 
 /**
  * 一覧画面の組み立て方。

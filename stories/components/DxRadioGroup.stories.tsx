@@ -1,6 +1,6 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DxRadioGroup, DxFormField, type DxRadioGroupItem } from '@/components/dx'
+import { DxRadioGroup, DxFormField, type DxRadioGroupItem } from '../../components/dx'
 
 const PRIORITIES: DxRadioGroupItem[] = [
   { value: 'high', label: '高' },

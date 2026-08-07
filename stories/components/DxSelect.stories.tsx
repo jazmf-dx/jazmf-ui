@@ -1,6 +1,6 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DxSelect, DxFormField, type DxSelectItem } from '@/components/dx'
+import { DxSelect, DxFormField, type DxSelectItem } from '../../components/dx'
 
 const PRIORITIES: DxSelectItem[] = [
   { value: 'high', label: '高' },

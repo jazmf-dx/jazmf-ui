@@ -19,8 +19,8 @@ import {
   SelectValue,
   SelectGroupLabel,
   SelectGroup,
-} from "@/components/ui/select"
-import { cn } from "@/lib/utils"
+} from '../ui/select'
+import { cn } from '../../lib/utils'
 
 export interface DxSelectItem {
   /** 選択時の値 */

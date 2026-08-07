@@ -6,8 +6,8 @@
  */
 
 import * as React from "react"
-import { Progress, ProgressTrack, ProgressIndicator } from "@/components/ui/progress"
-import { cn } from "@/lib/utils"
+import { Progress, ProgressTrack, ProgressIndicator } from '../ui/progress'
+import { cn } from '../../lib/utils'
 
 export interface DxProgressProps {
   /** 現在値。0〜max の範囲。 */

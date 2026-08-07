@@ -1,6 +1,6 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DxCheckbox, DxButton } from '@/components/dx'
+import { DxCheckbox, DxButton } from '../../components/dx'
 
 /**
  * DxCheckbox はオン / オフを切り替えるためのコンポーネント。

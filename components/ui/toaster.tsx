@@ -10,8 +10,8 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "@/components/ui/toast"
-import { toastManager, type ToastVariant } from "@/hooks/use-toast"
+} from './toast'
+import { toastManager, type ToastVariant } from '../../hooks/use-toast'
 
 /** variant ごとのアイコン。DxToast はここでアイコンを描画する（title には文字列のみ渡す） */
 const VARIANT_ICON = {

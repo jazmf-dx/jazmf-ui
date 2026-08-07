@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DxFormField, DxInput, DxSelect, DxButton } from '@/components/dx'
+import { DxFormField, DxInput, DxSelect, DxButton } from '../../components/dx'
 
 /**
  * DxFormField はラベル・入力欄・エラー・ヘルプをまとめる部品。

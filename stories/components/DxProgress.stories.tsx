@@ -1,6 +1,6 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DxProgress, DxCard, DxButton } from '@/components/dx'
+import { DxProgress, DxCard, DxButton } from '../../components/dx'
 
 /**
  * DxProgress は進捗（%）が分かる処理の進行状況を表示する。

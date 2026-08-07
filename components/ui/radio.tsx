@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Radio as RadioPrimitive } from "@base-ui/react/radio"
 
-import { cn } from "@/lib/utils"
+import { cn } from '../../lib/utils'
 
 /**
  * Base UI の Radio をラップした基底ラジオボタン（ドット表示）。

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import type { DateRange } from 'react-day-picker'
-import { DxDatePicker, DxFormField, DxButton } from '@/components/dx'
+import { DxDatePicker, DxFormField, DxButton } from '../../components/dx'
 
 /**
  * DxDatePicker は日付を選ぶコンポーネント。

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Search, X } from 'lucide-react'
-import { DxInput, DxFormField } from '@/components/dx'
+import { DxInput, DxFormField } from '../../components/dx'
 
 /**
  * DxInput はテキスト入力の唯一のコンポーネント。

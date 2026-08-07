@@ -29,8 +29,8 @@
  */
 
 import { useState, useEffect } from "react"
-import { DxConfirmDialog, DxToast, DxToaster } from "@/components/dx"
-import { getCsrfHeaders } from "@/lib/csrf"
+import { DxConfirmDialog, DxToast, DxToaster } from './dx'
+import { getCsrfHeaders } from '../lib/csrf'
 
 export interface ConfirmDialogIslandProps {
   /**

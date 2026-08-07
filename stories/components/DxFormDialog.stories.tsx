@@ -7,7 +7,7 @@ import {
   DxInput,
   DxSelect,
   DxCheckbox,
-} from '@/components/dx'
+} from '../../components/dx'
 
 /**
  * DxFormDialog はフォーム入力を伴うダイアログ。

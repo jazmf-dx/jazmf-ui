@@ -1,6 +1,6 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DxToast, DxButton, DxCard } from '@/components/dx'
+import { DxToast, DxButton, DxCard } from '../../components/dx'
 
 /**
  * DxToast は操作結果を一時的に知らせる通知。
@@ -25,7 +25,7 @@ React / 素の JS / Django messages のどの経路から呼んでも、同じ�
 
 | 呼び出し元 | 書き方 |
 |---|---|
-| React Island | \`import { DxToast } from '@/components/dx'\` → \`DxToast.success('保存しました')\` |
+| React Island | \`import { DxToast } from '../../components/dx'\` → \`DxToast.success('保存しました')\` |
 | Alpine.js / htmx / 素の JS | \`window.DxToast.success('保存しました')\` |
 | 既存コード（後方互換） | \`window.showToast('保存しました', 'success')\` → 内部で DxToast に転送される |
 | Django View | \`messages.success(request, '保存しました')\` → 次のページ読み込み時に自動でトースト表示 |

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DxPagination, DxTable } from '@/components/dx'
+import { DxPagination, DxTable } from '../../components/dx'
 
 /**
  * DxPagination は一覧・テーブルの下に置くページ送り UI。

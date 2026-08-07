@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { AlertCircle } from 'lucide-react'
-import { DxBadge, DxTable } from '@/components/dx'
+import { DxBadge, DxTable } from '../../components/dx'
 
 /**
  * DxBadge はステータス・種別・優先度を表すピル型ラベル。

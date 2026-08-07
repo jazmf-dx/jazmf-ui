@@ -25,8 +25,8 @@
  */
 
 import * as React from 'react'
-import type { SemanticColor } from '@/tokens/colors'
-import { ICON_PATHS, ICON_NAMES } from '@/tokens/icons.generated'
+import type { SemanticColor } from '../../tokens/colors'
+import { ICON_PATHS, ICON_NAMES } from '../../tokens/icons.generated'
 
 /** 仕様書内の表。素の table にしてダーク切替にも追従させる */
 export function SpecTable({

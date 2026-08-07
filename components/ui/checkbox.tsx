@@ -2,7 +2,7 @@ import * as React from "react"
 import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox"
 import { Check, Minus } from "lucide-react"
 
-import { cn } from "@/lib/utils"
+import { cn } from '../../lib/utils'
 
 /**
  * Base UI の Checkbox をラップした基底チェックボックス。

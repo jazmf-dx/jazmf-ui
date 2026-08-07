@@ -1,6 +1,6 @@
 import * as React from 'react'
 import type { Preview, Decorator } from '@storybook/react-vite'
-import { DxToaster } from '@/components/dx'
+import { DxToaster } from '../components/dx'
 import './storybook.css'
 
 /**

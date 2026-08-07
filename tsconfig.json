@@ -10,11 +10,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"]
-    }
+    "isolatedModules": true
   },
   "include": ["components/**/*", "hooks/**/*", "lib/**/*", "tokens/**/*", "stories/**/*", ".storybook/**/*", "registry.ts", "main.tsx"],
   "exclude": ["node_modules", "storybook-static"]

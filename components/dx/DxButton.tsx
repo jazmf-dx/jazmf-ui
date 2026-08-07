@@ -6,9 +6,9 @@
  */
 
 import * as React from "react"
-import { Button, ButtonProps } from "@/components/ui/button"
+import { Button, ButtonProps } from '../ui/button'
 import { Loader2 } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { cn } from '../../lib/utils'
 
 export interface DxButtonProps extends Omit<ButtonProps, "variant"> {
   /**

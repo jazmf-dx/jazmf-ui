@@ -41,7 +41,7 @@
 
 import { useEffect, useState } from "react"
 import type { DateRange } from "react-day-picker"
-import { DxDatePicker } from "@/components/dx"
+import { DxDatePicker } from './dx'
 
 function parseIsoDate(value?: string): Date | undefined {
   if (!value) return undefined

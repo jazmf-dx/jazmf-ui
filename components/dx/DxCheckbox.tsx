@@ -6,8 +6,8 @@
  */
 
 import * as React from "react"
-import { Checkbox } from "@/components/ui/checkbox"
-import { cn } from "@/lib/utils"
+import { Checkbox } from '../ui/checkbox'
+import { cn } from '../../lib/utils'
 
 export interface DxCheckboxProps
   extends Omit<React.ComponentPropsWithoutRef<typeof Checkbox>, "children"> {

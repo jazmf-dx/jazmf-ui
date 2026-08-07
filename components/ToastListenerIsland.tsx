@@ -24,8 +24,8 @@
  */
 
 import { useEffect } from "react"
-import { DxToast, DxToaster, registerGlobalDxToast } from "@/components/dx"
-import type { DxToastType } from "@/components/dx/DxToast"
+import { DxToast, DxToaster, registerGlobalDxToast } from './dx'
+import type { DxToastType } from './dx/DxToast'
 
 interface DjangoMessage {
   text: string

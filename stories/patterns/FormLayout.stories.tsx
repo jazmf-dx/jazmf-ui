@@ -10,7 +10,7 @@ import {
   DxInput,
   DxSelect,
   DxToast,
-} from '@/components/dx'
+} from '../../components/dx'
 
 /**
  * 入力フォーム画面の組み立て方。

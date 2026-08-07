@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Plus, Trash, Download } from 'lucide-react'
-import { DxButton } from '@/components/dx'
+import { DxButton } from '../../components/dx'
 
 /**
  * DxButton は画面上のあらゆるアクションに使う唯一のボタンコンポーネント。

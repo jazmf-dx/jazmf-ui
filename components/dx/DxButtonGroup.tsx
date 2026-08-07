@@ -6,8 +6,8 @@
  */
 
 import * as React from "react"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { cn } from "@/lib/utils"
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
+import { cn } from '../../lib/utils'
 
 export interface DxButtonGroupItem {
   /** 選択時の値 */

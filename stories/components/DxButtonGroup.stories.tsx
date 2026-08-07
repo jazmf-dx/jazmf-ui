@@ -1,7 +1,7 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { LayoutGrid, List, Rows3 } from 'lucide-react'
-import { DxButtonGroup, DxFormField, type DxButtonGroupItem } from '@/components/dx'
+import { DxButtonGroup, DxFormField, type DxButtonGroupItem } from '../../components/dx'
 
 const PERIODS: DxButtonGroupItem[] = [
   { value: 'day', label: '日' },

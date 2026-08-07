@@ -39,23 +39,6 @@ const config: StorybookConfig = {
     return {
       ...viteConfig,
       plugins: [...(viteConfig.plugins ?? []), tailwindcss()],
-      resolve: {
-        ...viteConfig.resolve,
-        alias: {
-          ...viteConfig.resolve?.alias,
-          // ★ 重要: 既存コンポーネントの `@/components/ui/button` 等の
-          // import をそのまま解決するためのエイリアス。
-          //
-          // 各プロジェクトは dx-ui を frontend/src/ にコピーして使い、
-          // vite.config.ts で `@` → frontend/src を張っている。
-          // ここで `@` → packages/dx-ui を張ることで、
-          // **コンポーネントのソースを1文字も変えずに** Storybook から読める。
-          //
-          // ソースを書き換えると各プロジェクトのコピーと差分が出て
-          // ドリフトの原因になる（現在は全ファイル md5 一致を維持している）。
-          '@': pkgRoot,
-        },
-      },
     }
   },
 }

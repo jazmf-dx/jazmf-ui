@@ -13,7 +13,7 @@
 import * as React from "react"
 import { Search, X } from "lucide-react"
 import { DxInput, type DxInputProps } from "./DxInput"
-import { cn } from "@/lib/utils"
+import { cn } from '../../lib/utils'
 
 export interface DxSearchInputProps
   extends Omit<DxInputProps, "leftIcon" | "rightIcon" | "type"> {

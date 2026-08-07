@@ -7,7 +7,7 @@ import {
   DxCheckbox,
   DxDropdown,
   type DxTableColumn,
-} from '@/components/dx'
+} from '../../components/dx'
 
 type Request = {
   id: number

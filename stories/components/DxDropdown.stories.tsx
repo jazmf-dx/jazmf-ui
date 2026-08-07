@@ -15,7 +15,7 @@ import {
   DxConfirmDialog,
   DxToast,
   type DxDropdownItem,
-} from '@/components/dx'
+} from '../../components/dx'
 
 /**
  * DxDropdown は行アクションのメニュー。

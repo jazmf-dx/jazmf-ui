@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DxSpinner, DxCard, DxButton } from '@/components/dx'
+import { DxSpinner, DxCard, DxButton } from '../../components/dx'
 
 /**
  * DxSpinner はページ・カード・セクション単位の読み込み中表示。

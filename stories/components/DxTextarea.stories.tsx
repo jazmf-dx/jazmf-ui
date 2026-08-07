@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DxTextarea, DxFormField } from '@/components/dx'
+import { DxTextarea, DxFormField } from '../../components/dx'
 
 /**
  * DxTextarea は複数行テキスト入力の唯一のコンポーネント。

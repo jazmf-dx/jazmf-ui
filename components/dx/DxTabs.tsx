@@ -7,7 +7,7 @@
  */
 
 import * as React from "react"
-import { Tabs, TabsList, TabsTab, TabsPanel } from "@/components/ui/tabs"
+import { Tabs, TabsList, TabsTab, TabsPanel } from '../ui/tabs'
 
 export interface DxTabItem {
   /** タブの一意な値 */

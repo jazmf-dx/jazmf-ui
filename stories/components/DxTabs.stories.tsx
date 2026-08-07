@@ -1,7 +1,7 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Settings, User, Bell } from 'lucide-react'
-import { DxTabs, DxCard } from '@/components/dx'
+import { DxTabs, DxCard } from '../../components/dx'
 
 /**
  * DxTabs は同一画面内で複数のビューを切り替えるためのコンポーネント。

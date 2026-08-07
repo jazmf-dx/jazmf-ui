@@ -13,7 +13,7 @@
  */
 
 import * as React from "react"
-import { cn } from "@/lib/utils"
+import { cn } from '../../lib/utils'
 
 export interface DxTableColumn<T> {
   /** 列のキー（React の key に使う） */

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DxConfirmDialog, DxButton } from '@/components/dx'
+import { DxConfirmDialog, DxButton } from '../../components/dx'
 
 /**
  * DxConfirmDialog は「実行してよいか」を尋ねる確認ダイアログ。
