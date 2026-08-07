@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """tokens/icons.generated.ts を icons_templatetag.py から生成する。
 
-アイコンの SSOT は packages/django-shared/icons_templatetag.py。
+アイコンの SSOT は jazmf-platform submodule 内の
+packages/django-shared/icons_templatetag.py。
 Storybook の Foundations/Icons が一覧を描画するために TS 版が必要なので、
 手で二重管理せずここで生成する。
 
 使い方:
-    cd packages/dx-ui && npm run gen:icons
+    npm run gen:icons
 """
 
 import json
@@ -15,7 +16,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 PKG = HERE.parent
-SRC = PKG.parent / "django-shared" / "icons_templatetag.py"
+SRC = PKG / "jazmf-platform" / "packages" / "django-shared" / "icons_templatetag.py"
 DEST = PKG / "tokens" / "icons.generated.ts"
 
 HEADER = '''/**
@@ -23,10 +24,10 @@ HEADER = '''/**
  *
  * <important>
  * このファイルは自動生成物。手で編集しない。
- * SSOT は packages/django-shared/icons_templatetag.py の ICONS。
+ * SSOT は jazmf-platform submodule 内の packages/django-shared/icons_templatetag.py の ICONS。
  * アイコンを追加・変更したら icons_templatetag.py を直し、下記コマンドで再生成する。
  *
- *   cd packages/dx-ui && npm run gen:icons
+ *   npm run gen:icons
  * </important>
  *
  * Django テンプレートでは `{% icon "plus" size="sm" %}` を使う（このファイルは使わない）。

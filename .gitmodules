@@ -1,0 +1,3 @@
+[submodule "jazmf-platform"]
+	path = jazmf-platform
+	url = git@github.com:jazmf-dx/jazmf-platform.git

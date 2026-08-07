@@ -3,10 +3,10 @@
  *
  * <important>
  * このファイルは自動生成物。手で編集しない。
- * SSOT は packages/django-shared/icons_templatetag.py の ICONS。
+ * SSOT は jazmf-platform submodule 内の packages/django-shared/icons_templatetag.py の ICONS。
  * アイコンを追加・変更したら icons_templatetag.py を直し、下記コマンドで再生成する。
  *
- *   cd packages/dx-ui && npm run gen:icons
+ *   npm run gen:icons
  * </important>
  *
  * Django テンプレートでは `{% icon "plus" size="sm" %}` を使う（このファイルは使わない）。
