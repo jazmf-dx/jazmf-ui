@@ -317,32 +317,41 @@ htmx のリクエスト中の表示には `htmx-indicator` を使います
 
 ## テーブル
 
-テーブル用の共通クラスはまだありません（重複が確認されたら切り出します）。
-現状は以下の構成に揃えてください。
-
 <ClassSample
-  sample={`<div class="overflow-x-auto rounded-xl border border-gray-200 bg-white">
-  <table class="w-full border-collapse text-sm">
+  sample={`<div class="overflow-x-auto rounded-xl border border-gray-200">
+  <table class="data-table">
     <thead>
-      <tr class="border-b border-gray-200 bg-gray-100">
-        <th scope="col" class="px-4 py-2.5 text-left text-xs font-semibold text-gray-500">件名</th>
-        <th scope="col" class="px-4 py-2.5 text-right text-xs font-semibold text-gray-500">金額</th>
+      <tr>
+        <th scope="col">件名</th>
+        <th scope="col" class="text-right">金額</th>
       </tr>
     </thead>
     <tbody>
-      <tr class="border-b border-gray-200">
-        <td class="px-4 py-2.5">備品購入</td>
-        <td class="px-4 py-2.5 text-right">12,000 円</td>
+      <tr>
+        <td>備品購入</td>
+        <td class="text-right">12,000 円</td>
       </tr>
       <tr>
-        <td class="px-4 py-2.5">出張費</td>
-        <td class="px-4 py-2.5 text-right">45,800 円</td>
+        <td>出張費</td>
+        <td class="text-right">45,800 円</td>
       </tr>
     </tbody>
   </table>
 </div>`}
   note={<>ヘッダーには <Code>scope="col"</Code> を付けてください。数値は右寄せ + 桁区切りにします。横スクロールは親の <Code>overflow-x-auto</Code> で受けます。</>}
 />
+
+<SpecTable
+  head={['クラス', '用途']}
+  rows={[
+    [<Code>data-table</Code>, 'テーブル本体。ボーダー・行間パディング・ホバー背景を持つ'],
+    [<Code>data-table thead</Code>, 'ヘッダー行。大文字・グレー・下線'],
+  ]}
+/>
+
+0 件時は空行を出さず `empty_state.html` を `<tbody>` 内に置いてください
+（[空状態](#空状態)参照）。行末のドロップダウン操作は
+`includes/molecules/row_actions.html` を使います（ADR-0009: レイアウト系 UI は Django 所有）。
 
 ---
 
@@ -360,7 +369,7 @@ htmx のリクエスト中の表示には `htmx-indicator` を使います
     [<Code>select.input-field</Code>, <Code>{'<DxSelect>'}</Code>],
     [<Code>card</Code>, <Code>{'<DxCard>'}</Code>],
     ['`form_field.html`', <Code>{'<DxFormField>'}</Code>],
-    ['（テーブルの HTML）', <Code>{'<DxTable>'}</Code>],
+    [<Code>data-table</Code>, <Code>{'<DxTable>'}</Code>],
     [<Code>badge</Code>, '（React 版なし。span に直接クラスを当てる）'],
     ['`inline_alert.html`', '（恒久メッセージはこちら。一時通知は `DxToast`）'],
   ]}
