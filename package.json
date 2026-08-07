@@ -1,6 +1,6 @@
 {
   "name": "@jazmf-dx/dx-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "jazmf 専用 UI コンポーネントライブラリ + デザインシステム仕様書（Storybook）",
   "type": "module",
   "scripts": {
