@@ -9,7 +9,7 @@ import { SpecTable, Code, DoDont } from './_parts'
 Tailwind のデフォルトスケール（**0.25rem = 4px 刻み**）をそのまま使います。
 独自スケールは定義しません。
 
-- 運用ルール: `design-system/spacing-and-layout.md`
+- 運用ルール: `jazmf-platform/design-system/spacing-and-layout.md`
 
 <DoDont
   doText={<>スケール上の値を使う。<Code>p-4</Code> <Code>gap-3</Code> <Code>mb-1.5</Code></>}
@@ -130,6 +130,6 @@ CSS クラスと Dx コンポーネントで対応しています。
 - **横スクロールを発生させない**。テーブルは親を `overflow-x-auto` で包みます
   （`DxTable` は内部で対応済み）
 - **タップ領域は最低 44×44px** を確保します。`btn-xs` を並べる場合は
-  周囲に余白を取ってください（`design-system/accessibility.md`）
+  周囲に余白を取ってください（`jazmf-platform/design-system/accessibility.md`）
 - モバイルで `px-8` のような大きい左右余白を使うと本文幅が足りなくなります。
   左右余白は `px-4 md:px-6` のように広げてください

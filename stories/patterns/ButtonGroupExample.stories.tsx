@@ -35,7 +35,7 @@ const meta = {
 ## 注意事項
 
 - Tailwind Plus の元デザインをピクセル単位で再現したものではない。
-  **配色・余白は \`design-system/*.md\` のトークンに従う**（Tailwind Plus のデフォルト配色は使わない）
+  **配色・余白は \`jazmf-platform/design-system/*.md\` のトークンに従う**（Tailwind Plus のデフォルト配色は使わない）
 - 選択肢ごとに料金・説明などの補足を出したい場合は、\`DxButtonGroup\` の対象外
   （\`item.label\` は短いテキスト1行を想定）。カード型の選択 UI が必要なら別コンポーネントを検討する
         `,

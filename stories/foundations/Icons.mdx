@@ -6,8 +6,8 @@ import { IconGrid, Icon, SpecTable, Code, DoDont } from './_parts'
 
 # Icons
 
-- SSOT: `packages/django-shared/icons_templatetag.py` の `ICONS`（Heroicons v2 outline）
-- 運用ルール: `design-system/icons.md`
+- SSOT: `jazmf-platform/packages/django-shared/icons_templatetag.py` の `ICONS`（Heroicons v2 outline）
+- 運用ルール: `jazmf-platform/design-system/icons.md`
 
 **インライン SVG のコピペは禁止です。**
 過去に同じアイコンが 1,574 個 / 281 ファイルに複製され、
@@ -89,7 +89,7 @@ Django テンプレートで `{'{% icon "名前" %}'}` に指定できる名前�
 ## ルール
 
 1. **必要なアイコンが上に無い場合は、`icons_templatetag.py` の辞書に 1 回だけ追加する。**
-   追加後に `cd packages/dx-ui && npm run gen:icons` を実行して
+   追加後に `npm run gen:icons` を実行して
    `tokens/icons.generated.ts` を再生成してください（この一覧に反映されます）
 2. **絵文字を UI アイコンとして使わない。** OS ごとに見た目が変わり、
    サイズと色を制御できません
@@ -122,9 +122,9 @@ Django テンプレートで `{'{% icon "名前" %}'}` に指定できる名前�
 この一覧は `icons_templatetag.py` から自動生成しています。
 
 ```
-packages/django-shared/icons_templatetag.py   ← SSOT（Django が使う）
+jazmf-platform/packages/django-shared/icons_templatetag.py   ← SSOT（Django が使う）
         ↓ npm run gen:icons
-packages/dx-ui/tokens/icons.generated.ts      ← 自動生成（Storybook が使う）
+tokens/icons.generated.ts      ← 自動生成（Storybook が使う）
 ```
 
 `icons.generated.ts` を手で編集しないでください。次の生成で上書きされます。

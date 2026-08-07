@@ -9,7 +9,7 @@
  * Tailwind のクラス名は必ずリテラル文字列で書く。
  * `bg-${name}-50` のような動的組立は静的解析されず、色が出ずに灰色の箱になる。
  * トークン名から色を引くときは tokens/*.ts の `bgClass`（リテラル）を経由する。
- * 出典: design-system/principles.md
+ * 出典: jazmf-platform/design-system/principles.md
  * </important>
  *
  * <important>

@@ -7,7 +7,7 @@ import { DxBadge, DxTable } from '../../components/dx'
  *
  * <important>
  * バッジは色だけに意味を持たせない。現状セマンティックカラーは WCAG AA 未達
- * （design-system/accessibility.md）のため、必ず文字（「完了」「未対応」等）で
+ * （jazmf-platform/design-system/accessibility.md）のため、必ず文字（「完了」「未対応」等）で
  * 意味が読み取れるようにする。
  * </important>
  */

@@ -23,7 +23,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 <important>
 **グローバルナビ・サイドバーは React（`Dx*`）では作らない。** 全ページに出る chrome を
 Island 化すると Islands 方針から逸脱するため、Django 側の `includes/organisms/` に置く
-（[ADR-0008](../../../decisions/adr-0008-layout-in-django-and-react-tier-scheme.md)）。
+（[ADR-0008](../jazmf-platform/decisions/adr-0008-layout-in-django-and-react-tier-scheme.md)）。
 </important>
 
 ---
@@ -75,7 +75,7 @@ React は「Islands」として一部だけに埋め込まれます。
 ## トークンの構造
 
 ```
-packages/dx-ui/tokens/theme.css        ← 値の SSOT（@theme / .dark / btn-* 等）
+tokens/theme.css        ← 値の SSOT（@theme / .dark / btn-* 等）
     ├─ 各プロジェクトの backend/static/css/input.css が @import
     └─ Storybook の .storybook/storybook.css が @import
 ```
@@ -124,19 +124,22 @@ Storybook と実アプリが同じファイルを読んでいるため、
 
 Storybook は視覚的な仕様書、Markdown は AI が `grep` で読む詳細ルールです。両方を維持します。
 
+パスは `jazmf-platform` submodule 経由（`jazmf-platform/design-system/*.md` 等）。
+
 | ドキュメント | 内容 |
 | --- | --- |
-| `design-system/colors.md` | 色の運用ルール、ステータスカラーの意味 |
-| `design-system/typography.md` | 見出し・行間・コントラスト比 |
-| `design-system/spacing-and-layout.md` | 余白スケール、レイアウト |
-| `design-system/components.md` | 部品ごとの規約、重複の棚卸し |
-| `design-system/forms-and-validation.md` | フォームとバリデーション |
-| `design-system/accessibility.md` | アクセシビリティ要件 |
-| `design-system/icons.md` | アイコンの使い方 |
-| `design-system/principles.md` | 原則と追加手順 |
-| `decisions/adr-0003-dx-ui-wrapper.md` | なぜ shadcn/ui をラップするのか |
-| `decisions/adr-0005-storybook-as-spec.md` | なぜ Storybook を仕様書にするのか |
-| `decisions/adr-0008-layout-in-django-and-react-tier-scheme.md` | なぜナビ・サイドバーを Django 側に置くのか |
+| `jazmf-platform/design-system/colors.md` | 色の運用ルール、ステータスカラーの意味 |
+| `jazmf-platform/design-system/typography.md` | 見出し・行間・コントラスト比 |
+| `jazmf-platform/design-system/spacing-and-layout.md` | 余白スケール、レイアウト |
+| `jazmf-platform/design-system/components.md` | 部品ごとの規約、重複の棚卸し |
+| `jazmf-platform/design-system/forms-and-validation.md` | フォームとバリデーション |
+| `jazmf-platform/design-system/accessibility.md` | アクセシビリティ要件 |
+| `jazmf-platform/design-system/icons.md` | アイコンの使い方 |
+| `jazmf-platform/design-system/principles.md` | 原則と追加手順 |
+| `jazmf-platform/decisions/adr-0003-dx-ui-wrapper.md` | なぜ shadcn/ui をラップするのか |
+| `jazmf-platform/decisions/adr-0005-storybook-as-spec.md` | なぜ Storybook を仕様書にするのか |
+| `jazmf-platform/decisions/adr-0008-layout-in-django-and-react-tier-scheme.md` | なぜナビ・サイドバーを Django 側に置くのか |
+| `jazmf-platform/decisions/adr-0010-dx-ui-repo-split.md` | なぜ jazmf-ui を独立リポジトリへ分割したのか |
 
 ---
 

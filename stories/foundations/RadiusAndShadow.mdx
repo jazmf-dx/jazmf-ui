@@ -6,8 +6,8 @@ import { SpecTable, Code, DoDont } from './_parts'
 
 # Radius, Shadow, Animation
 
-- radius の SSOT: `packages/dx-ui/tokens/theme.css` の `--radius`（`0.5rem`）
-- 運用ルール: `design-system/spacing-and-layout.md`, `design-system/components.md`
+- radius の SSOT: `tokens/theme.css` の `--radius`（`0.5rem`）
+- 運用ルール: `jazmf-platform/design-system/spacing-and-layout.md`, `jazmf-platform/design-system/components.md`
 
 ---
 
@@ -66,7 +66,7 @@ CSS クラス（`btn-*` / `card`）と Dx コンポーネントは既にこの�
   dontText={<><Code>shadow-md</Code> / <Code>shadow-xl</Code> / <Code>shadow-2xl</Code> でカードを目立たせる</>}
 />
 
-**カードを入れ子にしない**でください（`design-system/components.md`）。
+**カードを入れ子にしない**でください（`jazmf-platform/design-system/components.md`）。
 影付きのカードの中に影付きのカードを置くと境界が判別できなくなります。
 入れ子が必要に見えるときは、内側を `border` だけの区画にします。
 
@@ -104,4 +104,4 @@ OS で「視差効果を減らす」を設定しているユーザーがいま�
 状態変化を伝える短いトランジション（`transition-colors`）はそのままで構いません。
 問題になるのは、大きく動く・繰り返す・自動で始まるアニメーションです。
 
-出典: `design-system/accessibility.md`
+出典: `jazmf-platform/design-system/accessibility.md`
