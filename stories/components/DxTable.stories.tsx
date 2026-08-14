@@ -4,7 +4,6 @@ import { MoreVertical } from 'lucide-react'
 import {
   DxTable,
   DxButton,
-  DxCheckbox,
   DxDropdown,
   type DxTableColumn,
 } from '../../components/dx'
@@ -60,6 +59,28 @@ const COLUMNS: DxTableColumn<Request>[] = [
  * テンプレート側の見本は Foundations/CSS Classes の「テーブル」を参照。
  * </important>
  */
+/**
+ * 行選択のチェックボックス。Dx ラッパーは無いため素の `input[type=checkbox]` を使う。
+ * 中間状態（indeterminate）は属性ではなく DOM プロパティなので ref で設定する。
+ */
+function RowCheckbox({
+  indeterminate,
+  ...props
+}: React.InputHTMLAttributes<HTMLInputElement> & { indeterminate?: boolean }) {
+  const ref = React.useRef<HTMLInputElement>(null)
+  React.useEffect(() => {
+    if (ref.current) ref.current.indeterminate = Boolean(indeterminate)
+  }, [indeterminate])
+  return (
+    <input
+      ref={ref}
+      type="checkbox"
+      className="size-4 rounded border-input text-primary focus:ring-2 focus:ring-ring"
+      {...props}
+    />
+  )
+}
+
 const meta = {
   title: 'Components/DxTable',
   component: DxTable,
@@ -253,20 +274,20 @@ export const WithRowSelection: Story = {
         key: 'select',
         className: 'w-10',
         header: (
-          <DxCheckbox
+          <RowCheckbox
             aria-label="すべて選択"
             checked={allChecked}
             indeterminate={someChecked}
-            onCheckedChange={(checked) => setSelected(checked ? ROWS.map((r) => r.id) : [])}
+            onChange={(e) => setSelected(e.target.checked ? ROWS.map((r) => r.id) : [])}
           />
         ),
         cell: (row) => (
-          <DxCheckbox
+          <RowCheckbox
             aria-label={`${row.title} を選択`}
             checked={selected.includes(row.id)}
-            onCheckedChange={(checked) =>
+            onChange={(e) =>
               setSelected((prev) =>
-                checked ? [...prev, row.id] : prev.filter((id) => id !== row.id)
+                e.target.checked ? [...prev, row.id] : prev.filter((id) => id !== row.id)
               )
             }
           />

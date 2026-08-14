@@ -1,14 +1,32 @@
-# DX UI — 社内標準 UI コンポーネントライブラリ + デザインシステム
+# DX UI — デザイントークン + Django 連携コンポーネント
 
-shadcn/ui（@base-ui/react ベース）をラップした React コンポーネント集、
-デザイントークン、および **Storybook による仕様書**。
+Django テンプレートと React Island で**見た目と操作を揃えるための最小限の共有物**。
+汎用 UI ライブラリではない。
 
-**画面側では DX UI コンポーネントのみを使用し、shadcn/ui（`components/ui/*`）を直接使用しない。**
+> **共通ルール**: 本リポジトリは開発Standard（`ai-dev-standards`）に準拠する。
+> UI の判断基準は [Application UI Standard](../ai-dev-standards/standards/application-ui/README.md) が正。
 
-設計判断の背景:
-- [ADR-0003 DX UI ラッパー方式](../../decisions/adr-0003-dx-ui-wrapper.md)
-- [ADR-0004 submodule による配布](../../decisions/adr-0004-distribution-submodule.md)
-- [ADR-0005 Storybook を仕様の一次情報にする](../../decisions/adr-0005-storybook-as-spec.md)
+---
+
+## ここに置くもの / 置かないもの
+
+<important>
+**基本 UI のラッパーを増やさない。** shadcn/ui で足りるものは各プロジェクトで
+shadcn/ui を直接使う。ここに置くのは次のどちらかを満たすものだけ。
+</important>
+
+| 置く基準 | 例 |
+|---|---|
+| **1. CSS クラスとのパリティ**<br>Django テンプレート側の `btn-*` / `input-field` / `badge` / `card` / `data-table` と React の見た目を一致させる必要があるもの | `DxButton` `DxInput` `DxBadge` `DxCard` `DxTable` |
+| **2. 繰り返し踏むロジック・ポリシーの内包** | `DxTable`（空状態が必須の API）<br>`DxConfirmDialog`（loading / error を内部で完結）<br>`DxFormField`（必須表示とエラー配置）<br>`DxDatePicker`（ja locale）<br>Island 4 種（htmx / `HX-Trigger` との接続） |
+
+**置かないもの:**
+
+| 置かない | 代わりに |
+|---|---|
+| shadcn/ui の素通しラッパー（select / checkbox / radio / textarea / spinner / progress 等） | 各プロジェクトで shadcn/ui を直接使う。または素の要素 + `input-field` クラス |
+| グローバルナビ・サイドバー | Django 側の `includes/organisms/` |
+| 業務ドメイン固有の UI（`UserPicker` / `DepartmentPicker` / `OrganizationTree` / `EmployeeCard` 等） | **そのドメインを所有するプロジェクト**。人・組織・拠点は `jazmf-directory` が所有し、他アプリは API 経由で参照する（Application UI Standard §5） |
 
 ---
 
@@ -21,133 +39,82 @@ shadcn/ui（@base-ui/react ベース）をラップした React コンポーネ�
 </important>
 
 ```bash
-cd packages/dx-ui
 npm install
 npm run storybook        # → http://localhost:6006
 ```
 
-Storybook は見た目の確認ツールではなく **仕様書**である。各 Story には以下が書かれている。
-
-- **目的** — 何のための部品か
-- **使う場面 / 使わない場面** — 「Django テンプレートでは `DxButton` ではなく `btn-primary`」のような判断基準
-- **Props** — 型と説明（実装の JSDoc から自動生成 + 補足）
-- **使用例** — コピーして使える組み合わせ
-- **注意事項** — 踏みやすい罠
-
-### 収録内容
+Storybook は見た目の確認ツールではなく **仕様書**である。各 Story には
+**目的 / 使う場面 / 使わない場面 / Props / 使用例 / 注意事項** が書かれている。
 
 | セクション | 内容 |
 |---|---|
-| **Introduction** | 読む順番・禁止事項・React と Django の使い分け。**最初に読む** |
-| **Foundations** | Colors / Typography / Spacing / Radius & Shadow / Icons / CSS Classes / **Motion** |
-| **Components** | Dx コンポーネント 23 個 |
-| **Patterns** | FormLayout / DataTable（画面の組み立て方） |
-
-<important>
-**グローバルナビ・サイドバーは dx-ui では作らない。** Django 側の `includes/organisms/` に
-置く方針にした（[ADR-0008](../../decisions/adr-0008-layout-in-django-and-react-tier-scheme.md)）。
-React の分類は `Foundations / Components / Patterns` の3層を維持し、
-atoms/molecules/organisms のようなティアは追加しない。
-</important>
+| **Introduction** | 読む順番・React と Django の使い分け。**最初に読む** |
+| **Foundations** | Colors / Typography / Spacing / Radius & Shadow / Icons / CSS Classes |
+| **Components** | Dx コンポーネント 16 個 |
+| **Patterns** | FormLayout / DataTable / ButtonGroupExample（画面の組み立て方） |
 
 **Foundations/CSS Classes** は Django テンプレート向け（`btn-primary` / `badge` / `card` /
 `input-field` / `avatar-*`）の見本。**アプリの画面の大半は React ではなく Django + htmx**
 なので、`.html` を書くときはこのページを見る。
 
-### ツールバー
-
-- **Theme** — light / dark 切替。ダークモードは構造のみ用意した段階なので、
-  既存コンポーネントと CSS クラスは破綻する（[ADR-0005](../../decisions/adr-0005-storybook-as-spec.md) 参照）
-- **Viewport** — Mobile (375px) / Tablet (768px) / Desktop (1280px)
-- **Accessibility パネル** — axe による自動検査
+ツールバーの **Theme** で light / dark を切り替えられるが、ダークモードは構造のみ用意した
+段階で、既存の CSS クラスは `bg-white` 直書きのため破綻する（既知の未対応項目）。
 
 ---
 
 ## 構成
 
 ```
-dx-ui/
-├── .storybook/                # Storybook 設定
-│   ├── main.ts                #   @ alias → packages/dx-ui（後述）+ Tailwind プラグイン
-│   ├── preview.tsx            #   theme.css の読み込み・dark 切替・a11y・viewport
-│   └── storybook.css          #   theme.css の import + Storybook 用の @source
+jazmf-ui/
 ├── tokens/                    # ★ デザイントークンの SSOT
 │   ├── theme.css              #   @theme（色・角丸）+ @layer components（btn-* 等）+ .dark
-│   ├── colors.ts              #   TS からトークンを参照するための定数
-│   ├── spacing.ts
-│   ├── typography.ts
-│   ├── radius.ts
-│   └── icons.generated.ts     #   自動生成（手で編集しない。後述）
+│   ├── colors.ts / spacing.ts / typography.ts / radius.ts
+│   ├── motion.css
+│   └── icons.generated.ts     #   自動生成（手で編集しない）
 ├── components/
-│   ├── dx/                    # ★ 画面から使う唯一の UI 部品群
-│   │   ├── DxButton.tsx       # ボタン（primary/secondary/danger/success/ghost/link）
-│   │   ├── DxInput.tsx        # テキスト入力（input-field と同じ見た目）
-│   │   ├── DxSelect.tsx       # セレクト（十数個までの選択肢）
-│   │   ├── DxCheckbox.tsx     # チェックボックス（indeterminate 対応）
-│   │   ├── DxCard.tsx         # カード（.card / .card-sm / .card-lg と同じ見た目）
-│   │   ├── DxTable.tsx        # テーブル（空状態が必須の API）
-│   │   ├── DxFormField.tsx    # ラベル + 入力 + エラー + ヘルプ
-│   │   ├── DxDialog.tsx       # 汎用ダイアログ
-│   │   ├── DxConfirmDialog.tsx# 確認ダイアログ（loading / error を内部で完結）
-│   │   ├── DxFormDialog.tsx   # フォームダイアログ
-│   │   ├── DxToast.tsx        # トースト通知（success/error/warning/info）
-│   │   ├── DxDropdown.tsx     # ドロップダウンメニュー
-│   │   ├── DxDatePicker.tsx   # 日付選択（single / range / multiple）
-│   │   └── index.ts           # エクスポート集約
-│   ├── ui/                    # shadcn/ui 内部実装（直接使用禁止・DX UI の下請け）
+│   ├── dx/                    # 上記の「置く基準」を満たすコンポーネントのみ
+│   ├── ui/                    # shadcn/ui 内部実装（Dx ラッパーの下請け。外から import しない）
 │   ├── ConfirmDialogIsland.tsx    # Django 連携 Island: 確認ダイアログ
 │   ├── DxFormDialogIsland.tsx     # Django 連携 Island: htmx フォームダイアログ
 │   ├── ToastListenerIsland.tsx    # Django 連携 Island: 全ページトースト
 │   └── DxDatePickerIsland.tsx     # Django 連携 Island: 日付選択
 ├── stories/                   # ★ Storybook（= 仕様書）
-│   ├── Introduction.mdx
-│   ├── foundations/*.mdx
-│   ├── components/*.stories.tsx
-│   └── patterns/*.stories.tsx
-├── scripts/gen-icons.py       # icons.generated.ts の生成スクリプト
-├── lib/
-│   ├── utils.ts               # cn() ユーティリティ
-│   └── csrf.ts                # CSRF トークン取得（Cookie 名を要変更）
+├── lib/                       # cn() / CSRF トークン取得
 ├── registry.ts                # data-react 属性 → コンポーネントのマッピング
-└── main.tsx                   # 自動マウントエントリ（修正不要）
+└── main.tsx                   # 自動マウントエントリ
 ```
+
+`components/ui/` に置くのは Dx ラッパーが実際に使う shadcn/ui だけ。
+使われなくなった shadcn/ui は残さず消す。
 
 ---
 
 ## トークンの SSOT
 
 色・角丸・共通 CSS クラスの定義は **`tokens/theme.css` の 1 箇所だけ**にある。
+消費側は自前で色値を再宣言せず、`@import "@jazmf-dx/dx-ui/styles.css";` で読み込む。
 
-```
-packages/dx-ui/tokens/theme.css              ← SSOT
-        ↑ @import                     ↑ Storybook が直接読む
-templates/django-app/.../input.css    .storybook/storybook.css
-（@source とプロジェクト固有 CSS のみ）
-```
-
-これにより **Storybook の見た目 = 実アプリの見た目** が構造的に保証される。
-色を変えるときは `theme.css` を編集する。`output.css` は生成物なので**絶対に直接編集しない**。
+> **既知の逸脱**: `jazmf-directory` の `islands/src/globals.css` はトークンを
+> 移植して再宣言している（`@import` に切り替える TODO がコード内に残っている）。
+> この状態では SSOT が二重化しているため、色を変えるときは両方を確認する。
 
 ### アプリ別のブランドカラー
 
-各アプリは `input.css` 側で `@theme` を上書きするだけでよい（コンポーネントは変更不要）。
+各アプリは自分の CSS 側で `@theme` を上書きするだけでよい（コンポーネントは変更不要）。
 
 ```css
-@import "../../../frontend/src/tokens/theme.css";
+@import "@jazmf-dx/dx-ui/styles.css";
 
-/* 動画システムは紫 */
 @theme {
   --color-primary: oklch(0.606 0.25 292.717);
   --color-primary-hover: oklch(0.541 0.281 293.009);
 }
 ```
 
-API・操作性・アクセシビリティ・命名は共通のまま、見た目だけがアプリごとに変わる。
-
 ### アイコン
 
-`tokens/icons.generated.ts` は `packages/django-shared/icons_templatetag.py` からの
-**自動生成物**。アイコンを追加するときは Python 側の `ICONS` 辞書に足してから:
+`tokens/icons.generated.ts` は Django 側の icons templatetag の `ICONS` 辞書からの
+**自動生成物**。アイコンを追加するときは Python 側に足してから:
 
 ```bash
 npm run gen:icons
@@ -157,31 +124,22 @@ TS 側を手で編集すると次回生成で消える。
 
 ---
 
-## 取り込み方（コピー方式）
+## 取り込み方
 
-npm パッケージとしては配布しない（[ADR-0004](../../decisions/adr-0004-distribution-submodule.md)）。
-プロジェクトの `frontend/src/` にコピーして使う。
+GitHub Packages 経由の npm パッケージとして配布する（`@jazmf-dx/dx-ui`）。
 
 ```bash
-cp -R jazmf-platform/packages/dx-ui/components your-project/frontend/src/
-cp -R jazmf-platform/packages/dx-ui/lib        your-project/frontend/src/
-cp -R jazmf-platform/packages/dx-ui/tokens     your-project/frontend/src/
-cp jazmf-platform/packages/dx-ui/registry.ts jazmf-platform/packages/dx-ui/main.tsx your-project/frontend/src/
+npm install @jazmf-dx/dx-ui
 ```
 
-その後:
+`.npmrc` に GitHub Packages のレジストリ設定が必要。パッケージは `.tsx` のまま配布し
+消費側の Vite でビルドされるため、Tailwind の `@source` にパッケージを含める。
 
-1. `lib/csrf.ts` の `CSRF_COOKIE_NAME` をプロジェクトの Cookie 名に変更
-2. `vite.config.ts` に `@` alias（`frontend/src`）を設定
-3. `input.css` の先頭で `@import "../../../frontend/src/tokens/theme.css";`
-4. 必要な依存を確認（`templates/django-app/package.json` にベースラインあり）
+```css
+@source "../node_modules/@jazmf-dx/dx-ui";
+```
 
-> `templates/django-app` から新規生成した場合は組み込み済み。
-
-<important>
-`components/dx/index.ts` だけを更新しない。export している `.tsx` と
-その下請け（`components/ui/*`）を必ず同時にコピーする。
-</important>
+その後、`lib/csrf.ts` の Cookie 名がプロジェクトと一致しているか確認する。
 
 ---
 
@@ -191,11 +149,12 @@ cp jazmf-platform/packages/dx-ui/registry.ts jazmf-platform/packages/dx-ui/main.
 
 | 書いているファイル | 使うもの |
 |---|---|
-| `.tsx`（React Island の中） | `Dx*` コンポーネント |
+| `.tsx`（React Island の中） | `Dx*` コンポーネント。無いものは shadcn/ui を各プロジェクトで直接使う |
 | `.html`（Django テンプレート） | CSS クラス（`btn-primary` / `card` / `input-field` / `badge`） |
 
-**React Island を新設しない。** 既存の Island（`registry.ts` にあるもの）以外は、
-Django + htmx + Alpine.js で組む。判断に迷ったら Storybook の Introduction を読む。
+インタラクティブ UI の標準手段は React Island、htmx はサーバー起点の部分 HTML 更新に
+限定する（[ADR-0002](../ai-dev-standards/decisions/adr-0002-frontend-technology-boundary.md)）。
+Alpine.js 等の軽量 JS フレームワークは使わない。
 
 ### Django テンプレートから（Island）
 
@@ -218,13 +177,13 @@ Django + htmx + Alpine.js で組む。判断に迷ったら Storybook の Introd
 ### React コンポーネント内から
 
 ```tsx
-import { DxButton, DxFormField, DxInput, DxToast } from "@/components/dx"
+import { DxButton, DxFormField, DxInput, DxToast } from "@jazmf-dx/dx-ui"
 
 DxToast.success("保存しました")
 DxToast.error("保存に失敗しました", "ネットワークエラーが発生しました。")
 ```
 
-### 素の JS / Alpine / htmx から
+### 素の JS / htmx から
 
 ```js
 window.DxToast.success("保存しました")
@@ -238,49 +197,42 @@ messages.success(request, "保存しました")  # ページ読込時に自動�
 
 ---
 
-## 共通部品を追加するとき
+## コンポーネントを追加するとき
 
 <important>
-**Story のない共通部品は「存在しないもの」として扱われる。**
-Storybook に載っていない部品は、他の開発者も AI も見つけられないため使われない。
+まず「ここに置くもの / 置かないもの」の基準を満たすか確認する。
+満たさないなら各プロジェクトで shadcn/ui を直接使う。**迷ったら追加しない。**
 </important>
 
-1. **複数アプリで反復利用されているか確認する。** 1 つのアプリでしか使わないものは
-   そのアプリに置く（下記「共通化しないもの」参照）
+1. **複数プロジェクトで実際に繰り返されているか確認する。** 1 つのアプリでしか
+   使わないものはそのアプリに置く
 2. `components/dx/Dx*.tsx` を実装する。トークン（`bg-card` / `text-foreground` /
    `border-border`）のみを使い、色を直書きしない
 3. `components/dx/index.ts` に export を追加する
 4. `stories/components/Dx*.stories.tsx` を作成する。
    **目的 / 使う場面 / 使わない場面 / Props / 使用例 / 注意事項** を必ず書く
 5. `npm run typecheck && npm run build-storybook` を通す
-6. `design-system/components.md` の棚卸し表を更新する
 
-### 共通化しないもの
+<important>
+**Story のない共通部品は「存在しないもの」として扱われる。**
+Storybook に載っていない部品は、他の開発者も AI も見つけられないため使われない。
+</important>
 
-業務固有のコンポーネントは各アプリで管理する。中身の意味が業務ごとに違うため。
+### 削除するとき
 
-```
-✗ dx-ui に入れない: EmployeeCard / VideoCard / RecipeCard / InvoiceTable / OrganizationTree
-✓ 各アプリの components/ に置く（外枠に DxCard を使うのは良い）
-```
+消費側で使われていないコンポーネントは残さず消す。
+Story・`index.ts` の export・`components/ui/` の下請けも同時に消す。
 
-## 改変ルール
-
-- プロジェクト側でコンポーネントを改善したら、汎用化できる変更は jazmf-platform に還元する
-- `components/ui/`（shadcn 内部）の改変は避ける。カスタマイズは `components/dx/` のラッパー層で行う
-- 既存コンポーネントは各プロジェクトのコピーと**バイト一致**を維持している。
-  変更するときは全プロジェクトへ反映する（`md5 -q` で確認）
-- 新しい DX コンポーネントを追加したら `index.ts`・Story・この README・
-  `design-system/components.md` を更新する
+---
 
 ## 禁止事項
 
 | 禁止 | 理由 / 代わりに |
 |---|---|
 | 独自の Button / Input を作る | `DxButton` / `DxInput`（または `btn-primary` / `input-field`）を使う |
-| 画面から `components/ui/` を import する | `components/dx/` を経由する |
+| 消費側から `@jazmf-dx/dx-ui` の `components/ui/` を import する | Dx ラッパーの下請け。基本 UI が要るなら自プロジェクトに shadcn/ui を入れる |
 | `confirm()` / `alert()` | `DxConfirmDialog` / `DxToast` |
-| `output.css` を直接編集する | Tailwind の生成物。`theme.css` か `input.css` を編集する |
 | 色を直書きする（`bg-blue-500` 等） | セマンティックトークン（`bg-primary` / `text-foreground`） |
 | クラス名の動的組み立て（`` `bg-${color}-50` ``） | Tailwind が静的解析できず色が出ない。リテラル文字列で書く |
 | Story を書かずに共通部品を追加する | 見つけられないため使われない |
+| 業務ドメイン固有の UI を入れる | そのドメインを所有するプロジェクトに置く |

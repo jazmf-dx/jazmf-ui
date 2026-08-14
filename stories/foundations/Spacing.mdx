@@ -53,7 +53,7 @@ React では `DxFormField` がこの余白を内部で適用するため、
 {/* ✓ 余白は DxFormField が持つ */}
 <div className="space-y-4">
   <DxFormField label="件名" required><DxInput /></DxFormField>
-  <DxFormField label="担当者"><DxSelect items={users} /></DxFormField>
+  <DxFormField label="担当者"><select className="input-field">{...}</select></DxFormField>
 </div>
 ```
 

@@ -4,13 +4,74 @@ import type { DateRange } from 'react-day-picker'
 import {
   DxButton,
   DxCard,
-  DxCheckbox,
   DxDatePicker,
   DxFormField,
   DxInput,
-  DxSelect,
   DxToast,
 } from '../../components/dx'
+
+/**
+ * 選択・チェックボックス・複数行入力に Dx ラッパーは無い。
+ * `select` / `input[type=checkbox]` / `textarea` を素で書き、
+ * `input-field` クラスで Django テンプレート側と見た目を揃える。
+ */
+const DEPARTMENT_GROUPS = [
+  { group: '本社', items: [
+    { value: 'sales', label: '営業部' },
+    { value: 'admin', label: '総務部' },
+    { value: 'dev', label: '開発部' },
+  ] },
+  { group: '工場', items: [
+    { value: 'qa', label: '品質管理課' },
+    { value: 'prod', label: '製造部' },
+  ] },
+]
+
+function DepartmentSelect(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
+  return (
+    <select className="input-field" {...props}>
+      <option value="">部署を選択</option>
+      {DEPARTMENT_GROUPS.map((g) => (
+        <optgroup key={g.group} label={g.group}>
+          {g.items.map((i) => (
+            <option key={i.value} value={i.value}>
+              {i.label}
+            </option>
+          ))}
+        </optgroup>
+      ))}
+    </select>
+  )
+}
+
+function CheckboxRow({
+  name,
+  label,
+  description,
+  defaultChecked,
+}: {
+  name: string
+  label: string
+  description?: string
+  defaultChecked?: boolean
+}) {
+  return (
+    <label className="flex items-start gap-2.5">
+      <input
+        type="checkbox"
+        name={name}
+        defaultChecked={defaultChecked}
+        className="mt-0.5 size-4 rounded border-input text-primary focus:ring-2 focus:ring-ring"
+      />
+      <span className="text-sm">
+        <span className="text-foreground">{label}</span>
+        {description && (
+          <span className="mt-0.5 block text-muted-foreground">{description}</span>
+        )}
+      </span>
+    </label>
+  )
+}
 
 /**
  * 入力フォーム画面の組み立て方。
@@ -79,19 +140,15 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-const PRIORITY_ITEMS = [
-  { value: 'high', label: '高' },
-  { value: 'mid', label: '中' },
-  { value: 'low', label: '低' },
-]
-
-const DEPARTMENT_ITEMS = [
-  { value: 'sales', label: '営業部', group: '本社' },
-  { value: 'admin', label: '総務部', group: '本社' },
-  { value: 'dev', label: '開発部', group: '本社' },
-  { value: 'qa', label: '品質管理課', group: '工場' },
-  { value: 'prod', label: '製造部', group: '工場' },
-]
+function PrioritySelect(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
+  return (
+    <select className="input-field" {...props}>
+      <option value="high">高</option>
+      <option value="mid">中</option>
+      <option value="low">低</option>
+    </select>
+  )
+}
 
 /**
  * 1 カラムの基本形。
@@ -107,11 +164,11 @@ export const SingleColumn: Story = {
       </DxFormField>
 
       <DxFormField label="申請部署" required>
-        <DxSelect name="department" items={DEPARTMENT_ITEMS} placeholder="部署を選択" required />
+        <DepartmentSelect name="department" required />
       </DxFormField>
 
       <DxFormField label="優先度" required helpText="後から変更できます">
-        <DxSelect name="priority" items={PRIORITY_ITEMS} defaultValue="mid" />
+        <PrioritySelect name="priority" defaultValue="mid" />
       </DxFormField>
 
       <DxFormField label="金額" required helpText="税込で入力してください">
@@ -156,10 +213,10 @@ export const WithSections: Story = {
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <DxFormField label="申請部署" required>
-              <DxSelect name="department" items={DEPARTMENT_ITEMS} placeholder="部署を選択" />
+              <DepartmentSelect name="department" />
             </DxFormField>
             <DxFormField label="優先度" required>
-              <DxSelect name="priority" items={PRIORITY_ITEMS} defaultValue="mid" />
+              <PrioritySelect name="priority" defaultValue="mid" />
             </DxFormField>
           </div>
         </div>
@@ -183,12 +240,12 @@ export const WithSections: Story = {
 
       <DxCard title="通知">
         <div className="space-y-3">
-          <DxCheckbox
+          <CheckboxRow
             name="notify_approver"
             label="承認者へメールで通知する"
             defaultChecked
           />
-          <DxCheckbox
+          <CheckboxRow
             name="notify_self"
             label="自分にも控えを送る"
             description="申請内容を記載したメールが登録アドレスに届きます。"
@@ -311,7 +368,7 @@ export const WithErrors: Story = {
       </DxFormField>
 
       <DxFormField label="申請部署" required error="申請部署を選択してください">
-        <DxSelect name="department" items={DEPARTMENT_ITEMS} placeholder="部署を選択" />
+        <DepartmentSelect name="department" />
       </DxFormField>
 
       <DxFormField

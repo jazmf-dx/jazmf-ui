@@ -3,11 +3,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { MoreVertical, Pencil, Copy, Trash, Search, Plus, X } from 'lucide-react'
 import {
   DxButton,
-  DxCheckbox,
   DxConfirmDialog,
   DxDropdown,
   DxInput,
-  DxSelect,
   DxTable,
   DxToast,
   type DxTableColumn,
@@ -122,6 +120,41 @@ const STATUS_FILTER_ITEMS = [
   { value: 'in_progress', label: '対応中' },
   { value: 'done', label: '完了' },
 ]
+
+/**
+ * 絞り込みとチェックボックスに Dx ラッパーは無い。
+ * `select` は `input-field` クラスで Django テンプレート側と見た目を揃える。
+ * 全選択の中間状態（indeterminate）は属性ではなく DOM プロパティなので ref で設定する。
+ */
+function StatusFilter(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
+  return (
+    <select className="input-field" {...props}>
+      {STATUS_FILTER_ITEMS.map((i) => (
+        <option key={i.value} value={i.value}>
+          {i.label}
+        </option>
+      ))}
+    </select>
+  )
+}
+
+function RowCheckbox({
+  indeterminate,
+  ...props
+}: React.InputHTMLAttributes<HTMLInputElement> & { indeterminate?: boolean }) {
+  const ref = React.useRef<HTMLInputElement>(null)
+  React.useEffect(() => {
+    if (ref.current) ref.current.indeterminate = Boolean(indeterminate)
+  }, [indeterminate])
+  return (
+    <input
+      ref={ref}
+      type="checkbox"
+      className="size-4 rounded border-input text-primary focus:ring-2 focus:ring-ring"
+      {...props}
+    />
+  )
+}
 
 /** 基本の列定義。数値列は右寄せ + `toLocaleString()`。 */
 function baseColumns(): DxTableColumn<Request>[] {
@@ -282,11 +315,10 @@ export const WithFiltering: Story = {
             />
           </div>
           <div className="sm:w-40">
-            <DxSelect
+            <StatusFilter
               aria-label="ステータスで絞り込み"
-              items={STATUS_FILTER_ITEMS}
               value={status}
-              onValueChange={setStatus}
+              onChange={(e) => setStatus(e.target.value)}
             />
           </div>
           {isFiltered && (
@@ -352,12 +384,12 @@ export const WithActionsAndSelection: Story = {
         key: 'select',
         className: 'w-10',
         header: (
-          <DxCheckbox
+          <RowCheckbox
             aria-label="選択可能な行をすべて選択"
             checked={allChecked}
             indeterminate={someChecked}
-            onCheckedChange={(checked) =>
-              setSelected(checked ? deletable.map((r) => r.id) : [])
+            onChange={(e) =>
+              setSelected(e.target.checked ? deletable.map((r) => r.id) : [])
             }
           />
         ),
@@ -366,12 +398,12 @@ export const WithActionsAndSelection: Story = {
             // 操作できない行はチェックボックスを出さない
             <span className="sr-only">選択できません</span>
           ) : (
-            <DxCheckbox
+            <RowCheckbox
               aria-label={`${row.title} を選択`}
               checked={selected.includes(row.id)}
-              onCheckedChange={(checked) =>
+              onChange={(e) =>
                 setSelected((prev) =>
-                  checked ? [...prev, row.id] : prev.filter((id) => id !== row.id)
+                  e.target.checked ? [...prev, row.id] : prev.filter((id) => id !== row.id)
                 )
               }
             />

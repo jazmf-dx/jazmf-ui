@@ -23,7 +23,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 <important>
 **グローバルナビ・サイドバーは React（`Dx*`）では作らない。** 全ページに出る chrome を
 Island 化すると Islands 方針から逸脱するため、Django 側の `includes/organisms/` に置く
-（[ADR-0008](../jazmf-platform/decisions/adr-0008-layout-in-django-and-react-tier-scheme.md)）。
+（[ADR-0008](../../jazmf-platform/decisions/adr-0008-layout-in-django-and-react-tier-scheme.md)）。
 </important>
 
 ---
@@ -51,11 +51,15 @@ React は「Islands」として一部だけに埋め込まれます。
 ## 使ってはいけないもの
 
 - **独自の Button / Input / Card を作る** → 既存の `Dx*` か CSS クラスを使う
-- **`components/ui/` を画面から直接 import する** → shadcn/ui の下請けです。`components/dx/` を使う
+- **`@jazmf-dx/dx-ui` の `components/ui/` を消費側から import する** → Dx ラッパーの下請けです。
+  基本 UI が必要なら自プロジェクトに shadcn/ui を入れる
 - **色を直書きする**（`style="color:#3b82f6"` / `bg-[#3b82f6]`）→ トークンを使う
 - **`confirm()` / `alert()`** → `DxConfirmDialog` / `DxToast` を使う
-- **業務固有コンポーネントをここに追加する**（`VideoCard` / `EmployeeCard` / `InvoiceTable` など）
-  → 意味と内容が業務ごとに違うため、各アプリの `frontend/src/` で管理する
+- **業務ドメイン固有のコンポーネントをここに追加する**（`UserPicker` / `DepartmentPicker` /
+  `EmployeeCard` / `OrganizationTree` など）→ そのドメインを所有するプロジェクトで管理する。
+  人・組織・拠点は `jazmf-directory` が所有し、他アプリは API 経由で参照する
+- **shadcn/ui の素通しラッパーを追加する**（select / checkbox / textarea など）
+  → 各プロジェクトで shadcn/ui を直接使うか、素の要素に `input-field` クラスを当てる
 
 ---
 
@@ -110,7 +114,7 @@ Storybook と実アプリが同じファイルを読んでいるため、
 
 - `<html class="dark">` を付けたときだけ有効になるオプトイン方式です
 - ツールバーの **Theme** で切り替えられます
-- 新規コンポーネント（`DxInput` / `DxSelect` / `DxCheckbox` / `DxCard` / `DxTable` / `DxFormField`）は
+- 新規コンポーネント（`DxInput` / `DxCard` / `DxTable` / `DxFormField`）は
   セマンティックトークンのみを使っており dark 対応済みです
 - **既存コンポーネントと CSS クラス（`card` / `input-field` 等）は `bg-white` 直書きのため
   dark で破綻します。** Theme を dark にすると破綻箇所が見えます。これは既知の未対応項目です
@@ -122,30 +126,32 @@ Storybook と実アプリが同じファイルを読んでいるため、
 
 ## 参照ドキュメント
 
-Storybook は視覚的な仕様書、Markdown は AI が `grep` で読む詳細ルールです。両方を維持します。
+Storybook は視覚的な仕様書、Markdown は AI が `grep` で読む詳細ルールです。
 
-パスは `jazmf-platform` submodule 経由（`jazmf-platform/design-system/*.md` 等）。
+判断基準の正は開発Standard（`ai-dev-standards`）にあります。AI エージェントは
+最初に `ai-dev-standards/ai/ONBOARDING.md` を読んでください。
 
 | ドキュメント | 内容 |
 | --- | --- |
-| `jazmf-platform/design-system/colors.md` | 色の運用ルール、ステータスカラーの意味 |
-| `jazmf-platform/design-system/typography.md` | 見出し・行間・コントラスト比 |
-| `jazmf-platform/design-system/spacing-and-layout.md` | 余白スケール、レイアウト |
-| `jazmf-platform/design-system/components.md` | 部品ごとの規約、重複の棚卸し |
-| `jazmf-platform/design-system/forms-and-validation.md` | フォームとバリデーション |
-| `jazmf-platform/design-system/accessibility.md` | アクセシビリティ要件 |
-| `jazmf-platform/design-system/icons.md` | アイコンの使い方 |
-| `jazmf-platform/design-system/principles.md` | 原則と追加手順 |
-| `jazmf-platform/decisions/adr-0003-dx-ui-wrapper.md` | なぜ shadcn/ui をラップするのか |
-| `jazmf-platform/decisions/adr-0005-storybook-as-spec.md` | なぜ Storybook を仕様書にするのか |
-| `jazmf-platform/decisions/adr-0008-layout-in-django-and-react-tier-scheme.md` | なぜナビ・サイドバーを Django 側に置くのか |
-| `jazmf-platform/decisions/adr-0010-dx-ui-repo-split.md` | なぜ jazmf-ui を独立リポジトリへ分割したのか |
+| `ai-dev-standards/standards/application-ui/README.md` | UI の基本原則、Semantic Token、フォーム UX、Layouts、Domain Components |
+| `ai-dev-standards/standards/application-ui/optional/theme-customization.md` | Theme の具体値や Token を追加する場合 |
+| `ai-dev-standards/decisions/adr-0002-frontend-technology-boundary.md` | なぜ React Islands を標準とし htmx を限定するのか |
+| `ai-dev-standards/decisions/adr-0003-core-and-optional-standards.md` | 何を Standard に置き、何を置かないのか |
+| `jazmf-ui/README.md` | ここに置くもの / 置かないものの基準、取り込み方 |
+
+色・タイポグラフィ・余白・アクセシビリティの運用ルールは、ai-dev-standards が
+意図的に扱わない領域のため `jazmf-platform/design-system/*.md` に残っています
+（`jazmf-ui` の兄弟ディレクトリ）。各 Foundations ページから個別に参照しています。
+
+> **未整理**: `jazmf-platform` の `standards/` `decisions/` は ai-dev-standards と
+> 内容が重複しています。どちらを正とするかは未決着です。
 
 ---
 
 ## 共通部品を追加するとき
 
-1. **本当に複数アプリで繰り返し使うか** を確認する（1 アプリだけなら各アプリで持つ）
+1. **README の「ここに置くもの / 置かないもの」の基準を満たすか** を確認する。
+   満たさない基本 UI は各プロジェクトで shadcn/ui を直接使う（**迷ったら追加しない**）
 2. `components/ui/` に下請けが必要なら `@base-ui/react` をラップして追加する
 3. `components/dx/Dx*.tsx` を作り、JSDoc に目的・`@example` を書く
 4. `components/dx/index.ts` に export する

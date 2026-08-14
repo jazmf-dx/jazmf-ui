@@ -5,8 +5,6 @@ import {
   DxButton,
   DxFormField,
   DxInput,
-  DxSelect,
-  DxCheckbox,
 } from '../../components/dx'
 
 /**
@@ -144,11 +142,20 @@ Django のバリデーションエラーは JSON で返し、\`DxFormField\` の
 export default meta
 type Story = StoryObj<typeof meta>
 
-const PRIORITY_ITEMS = [
-  { value: 'high', label: '高' },
-  { value: 'mid', label: '中' },
-  { value: 'low', label: '低' },
-]
+/**
+ * 選択・チェックボックスに Dx ラッパーは無い。素の要素を使い、
+ * `select` は `input-field` クラスで Django テンプレート側と見た目を揃える。
+ */
+function PrioritySelect(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
+  return (
+    <select className="input-field" {...props}>
+      <option value="">優先度を選択</option>
+      <option value="high">高</option>
+      <option value="mid">中</option>
+      <option value="low">低</option>
+    </select>
+  )
+}
 
 /**
  * 基本形。
@@ -189,7 +196,7 @@ export const Default: Story = {
             </DxFormField>
 
             <DxFormField label="優先度" required>
-              <DxSelect name="priority" items={PRIORITY_ITEMS} placeholder="優先度を選択" required />
+              <PrioritySelect name="priority" defaultValue="" required />
             </DxFormField>
 
             <DxFormField label="金額" required helpText="税込で入力してください">
@@ -238,7 +245,7 @@ export const Submitting: Story = {
               <DxInput name="title" defaultValue="備品購入（モニター 2 台）" required />
             </DxFormField>
             <DxFormField label="優先度" required>
-              <DxSelect name="priority" items={PRIORITY_ITEMS} defaultValue="mid" />
+              <PrioritySelect name="priority" defaultValue="mid" />
             </DxFormField>
           </div>
         </DxFormDialog>
@@ -346,7 +353,7 @@ export const Disabled: Story = {
               <DxInput name="title" defaultValue="研修参加費" />
             </DxFormField>
             <DxFormField label="優先度">
-              <DxSelect name="priority" items={PRIORITY_ITEMS} defaultValue="high" />
+              <PrioritySelect name="priority" defaultValue="high" />
             </DxFormField>
           </div>
         </DxFormDialog>
@@ -377,21 +384,25 @@ export const SuccessVariant: Story = {
         >
           <div className="space-y-4">
             <DxFormField label="公開範囲" required>
-              <DxSelect
-                name="scope"
-                items={[
-                  { value: 'all', label: '全社' },
-                  { value: 'dept', label: '所属部署のみ' },
-                ]}
-                defaultValue="dept"
-              />
+              <select className="input-field" name="scope" defaultValue="dept">
+                <option value="all">全社</option>
+                <option value="dept">所属部署のみ</option>
+              </select>
             </DxFormField>
-            <DxCheckbox
-              name="notify"
-              label="公開時に関係者へ通知する"
-              description="通知は公開直後に 1 度だけ送信されます。"
-              defaultChecked
-            />
+            <label className="flex items-start gap-2.5">
+              <input
+                type="checkbox"
+                name="notify"
+                defaultChecked
+                className="mt-0.5 size-4 rounded border-input text-primary focus:ring-2 focus:ring-ring"
+              />
+              <span className="text-sm">
+                <span className="text-foreground">公開時に関係者へ通知する</span>
+                <span className="mt-0.5 block text-muted-foreground">
+                  通知は公開直後に 1 度だけ送信されます。
+                </span>
+              </span>
+            </label>
           </div>
         </DxFormDialog>
       </>
@@ -424,7 +435,7 @@ export const NearTheLimit: Story = {
               <DxInput name="title" required />
             </DxFormField>
             <DxFormField label="優先度" required>
-              <DxSelect name="priority" items={PRIORITY_ITEMS} placeholder="優先度を選択" />
+              <PrioritySelect name="priority" defaultValue="" />
             </DxFormField>
             <DxFormField label="金額" required helpText="税込">
               <DxInput name="amount" type="number" min={0} />

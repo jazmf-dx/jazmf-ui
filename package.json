@@ -1,7 +1,7 @@
 {
   "name": "@jazmf-dx/dx-ui",
-  "version": "1.0.3",
-  "description": "jazmf 専用 UI コンポーネントライブラリ + デザインシステム仕様書（Storybook）",
+  "version": "2.0.0",
+  "description": "デザイントークン + Django 連携コンポーネント（Storybook = 仕様書）",
   "type": "module",
   "scripts": {
     "storybook": "storybook dev -p 6006",

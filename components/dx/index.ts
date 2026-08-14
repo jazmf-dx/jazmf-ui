@@ -1,17 +1,21 @@
 /**
  * DX UI Library - 社内 UI コンポーネントライブラリ
  *
- * shadcn/ui をラップした社内標準 UI コンポーネント集です。
- * 画面側では DX UI コンポーネントのみを使用し、shadcn/ui を直接使用しないでください。
+ * <important>
+ * ここに置くのは、**次のどちらかを満たすものだけ**。
+ * 満たさない基本 UI は shadcn/ui を各プロジェクトで直接使う（ラッパーを作らない）。
+ *
+ * 1. Django テンプレート側の CSS クラス（`btn-*` / `input-field` / `badge` /
+ *    `card` / `data-table`）と React の見た目パリティが必要なもの
+ * 2. 繰り返し踏むロジック・ポリシーを内包するもの
+ *    （DxTable の空状態必須 API、DxConfirmDialog の loading/error 内包、
+ *      DxFormField の必須表示とエラー配置、DxDatePicker の ja locale など）
+ *
+ * 判断の根拠は ai-dev-standards の Application UI Standard §1 / §5。
+ * </important>
  *
  * 各コンポーネントの仕様・使用例・使わない場面は Storybook を参照してください。
- *   cd packages/dx-ui && npm run storybook
- *
- * <important>
- * このファイルをプロジェクトへコピーする際は、export している .tsx と
- * その下請け（components/ui/*）を必ず同時にコピーしてください。
- * index.ts だけを更新すると解決できない import が発生します。
- * </important>
+ *   npm run storybook
  */
 
 export { DxButton } from "./DxButton"
@@ -42,12 +46,6 @@ export type {
 export { DxInput } from "./DxInput"
 export type { DxInputProps } from "./DxInput"
 
-export { DxSelect } from "./DxSelect"
-export type { DxSelectProps, DxSelectItem } from "./DxSelect"
-
-export { DxCheckbox } from "./DxCheckbox"
-export type { DxCheckboxProps } from "./DxCheckbox"
-
 export { DxButtonGroup } from "./DxButtonGroup"
 export type { DxButtonGroupProps, DxButtonGroupItem } from "./DxButtonGroup"
 
@@ -69,20 +67,5 @@ export type { DxPaginationProps } from "./DxPagination"
 export { DxBadge } from "./DxBadge"
 export type { DxBadgeProps, DxBadgeTone } from "./DxBadge"
 
-export { DxRadioGroup } from "./DxRadioGroup"
-export type { DxRadioGroupProps, DxRadioGroupItem } from "./DxRadioGroup"
-
-export { DxTextarea } from "./DxTextarea"
-export type { DxTextareaProps } from "./DxTextarea"
-
 export { DxSearchInput } from "./DxSearchInput"
 export type { DxSearchInputProps } from "./DxSearchInput"
-
-export { DxSpinner } from "./DxSpinner"
-export type { DxSpinnerProps, DxSpinnerSize } from "./DxSpinner"
-
-export { DxProgress } from "./DxProgress"
-export type { DxProgressProps } from "./DxProgress"
-
-export { DxSidebarItem } from "./DxSidebarItem"
-export type { DxSidebarItemProps } from "./DxSidebarItem"

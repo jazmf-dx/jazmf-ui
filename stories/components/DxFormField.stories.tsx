@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DxFormField, DxInput, DxSelect, DxButton } from '../../components/dx'
+import { DxFormField, DxInput, DxButton } from '../../components/dx'
 
 /**
  * DxFormField はラベル・入力欄・エラー・ヘルプをまとめる部品。
@@ -38,7 +38,7 @@ Django の \`includes/molecules/form_field.html\` の React 版。
 |---|---|
 | Django テンプレート（.html） | \`{% include 'includes/molecules/form_field.html' %}\` |
 | ラベルが不要な入力（検索ボックス、テーブル内のインライン編集） | \`DxInput\` 単体 + \`aria-label\` |
-| チェックボックス | \`DxCheckbox\`（ラベルを自前で持っているため二重になる） |
+| チェックボックス | \`label\` で囲んだ \`input[type=checkbox]\`（ラベルが二重になる） |
 
 ## Props
 
@@ -138,21 +138,24 @@ export const WithErrorAndHelpText: Story = {
   },
 }
 
-/** `DxSelect` と組み合わせる例。 */
+/**
+ * `select` と組み合わせる例。
+ *
+ * React 版の select コンポーネントは提供しない。素の `select` に
+ * `input-field` クラスを当てて Django テンプレート側と見た目を揃える。
+ */
 export const WithSelect: Story = {
   args: {
     label: '優先度',
     required: true,
     helpText: '後から変更できます',
     children: (
-      <DxSelect
-        items={[
-          { value: 'high', label: '高' },
-          { value: 'mid', label: '中' },
-          { value: 'low', label: '低' },
-        ]}
-        placeholder="優先度を選択"
-      />
+      <select className="input-field" defaultValue="">
+        <option value="">優先度を選択</option>
+        <option value="high">高</option>
+        <option value="mid">中</option>
+        <option value="low">低</option>
+      </select>
     ),
   },
 }
@@ -192,15 +195,12 @@ export const FullForm: Story = {
       </DxFormField>
 
       <DxFormField label="優先度" required>
-        <DxSelect
-          items={[
-            { value: 'high', label: '高' },
-            { value: 'mid', label: '中' },
-            { value: 'low', label: '低' },
-          ]}
-          placeholder="優先度を選択"
-          required
-        />
+        <select className="input-field" defaultValue="" required>
+          <option value="">優先度を選択</option>
+          <option value="high">高</option>
+          <option value="mid">中</option>
+          <option value="low">低</option>
+        </select>
       </DxFormField>
 
       <DxFormField label="金額" required error="金額を入力してください">
