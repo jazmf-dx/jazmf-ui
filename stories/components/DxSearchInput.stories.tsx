@@ -31,7 +31,7 @@ const meta = {
 
 | 場面 | 代わりに使うもの |
 |---|---|
-| 選択肢から選ぶ絞り込み | \`DxSelect\` |
+| 選択肢から選ぶ絞り込み | 素の \`<select class="input-field">\` |
 | 社員・取引先など候補から選ぶ検索 | Tom Select（Django） / Autocomplete（React） |
 
 ## 注意事項
