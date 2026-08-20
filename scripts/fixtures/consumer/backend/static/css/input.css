@@ -1,0 +1,17 @@
+/* 実アプリの backend/static/css/input.css と同じ構成。
+ * .storybook/storybook.css がその見本（tailwindcss + tw-animate-css + theme.css）。
+ *
+ * tw-animate-css をここで import しているのは意図的。theme.css は import せず、
+ * dialog / dropdown / toast の animate-in 系は消費側の import に依存している
+ * （tokens/radius.ts の TRANSITIONS コメント参照）。宣言漏れを検出したいので
+ * package.json の dependencies にも入れてある。 */
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* パッケージの .tsx が使う Tailwind クラスを拾わせる。
+ * Tailwind v4 は node_modules を自動走査しない。 */
+@source "../../../node_modules/@jazmf-dx/dx-ui";
+@source "../../../islands/**/*.{ts,tsx}";
+
+/* ★ トークン + 共有コンポーネントクラスの SSOT */
+@import "@jazmf-dx/dx-ui/styles.css";
