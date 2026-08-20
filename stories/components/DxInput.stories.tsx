@@ -37,7 +37,7 @@ Django の \`input-field\` クラスと同じ余白（\`px-3.5 py-2.5\`）・角
 | Django テンプレート（.html）の入力欄 | widget に \`class="input-field"\` を指定 |
 | ラベル・エラー・ヘルプも必要 | \`DxFormField\` で包む（余白と aria が自動で付く） |
 | 複数行の入力 | \`<textarea className="input-field">\`（React 版は未提供） |
-| 選択肢から選ぶ | \`DxSelect\` |
+| 選択肢から選ぶ | 素の \`<select class="input-field">\` |
 | 日付の入力 | \`DxDatePicker\` |
 | 検索して選ぶ（社員選択など） | Tom Select（Django） / Autocomplete（React） |
 

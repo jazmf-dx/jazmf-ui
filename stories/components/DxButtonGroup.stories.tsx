@@ -47,7 +47,7 @@ const meta = {
 
 ## Props
 
-選択肢は JSX の子要素ではなく **\`items\` 配列**で渡す（\`DxSelect\` と同じ方針）。
+選択肢は JSX の子要素ではなく **\`items\` 配列**で渡す（\`DxTabs\` / \`DxDropdown\` と同じ方針）。
 \`variant\`（\`primary\` / \`secondary\`）と \`size\`（\`sm\` / \`md\` / \`lg\`）でカスタマイズできる。
 
 ## 注意事項

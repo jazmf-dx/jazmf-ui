@@ -28,7 +28,7 @@ export interface DxFormFieldProps {
   helpText?: React.ReactNode
 
   /**
-   * 入力欄。`<DxInput>` / `<DxSelect>` / `<textarea>` 等を渡す。
+   * 入力欄。`<DxInput>` / `<select className="input-field">` / `<textarea>` 等を渡す。
    * id / aria-describedby / aria-invalid は自動で注入される。
    */
   children: React.ReactElement
@@ -58,7 +58,7 @@ export interface DxFormFieldProps {
  *
  * // ヘルプ付き
  * <DxFormField label="公開範囲" helpText="後から変更できます">
- *   <DxSelect items={items} />
+ *   <select className="input-field">…</select>
  * </DxFormField>
  * ```
  */
@@ -79,7 +79,8 @@ export function DxFormField({
   const describedBy = [errorId, helpId].filter(Boolean).join(" ") || undefined
 
   // 子要素に id と a11y 属性を注入する。
-  // error は子が受け取れる場合（DxInput / DxSelect）だけ渡す。
+  // error は子が受け取れる場合（DxInput 等の Dx コンポーネント）だけ渡す。
+  // 素の <select> / <textarea> は error prop を持たないので DOM に漏らさない。
   const child = React.cloneElement(children, {
     id,
     "aria-describedby": describedBy,
