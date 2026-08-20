@@ -2,6 +2,10 @@
   "name": "@jazmf-dx/dx-ui",
   "version": "2.0.0",
   "description": "デザイントークン + Django 連携コンポーネント（Storybook = 仕様書）",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jazmf-dx/jazmf-ui.git"
+  },
   "type": "module",
   "scripts": {
     "storybook": "storybook dev -p 6006",
